@@ -58,21 +58,25 @@
         }
         .imageContainer {
             position: relative;
-            width: 300px; /* 원하는 너비 */
-            margin: 0 auto;
+            /*width: 300px; !* 이미지 컨테이너 크기 *!*/
+            margin-bottom: 30px; /* 버튼과의 간격 */
         }
+
         .imageContainer img {
             position: absolute;
-            top: 0;
             left: 50%;
             transform: translateX(-50%);
         }
+
         .imageContainer .bible {
-            z-index: 1; /* 아래쪽 이미지 */
+            z-index: 1;
+            width: 300px; /* 성경 이미지 크기 */
         }
+
         .imageContainer .heart {
-            z-index: 2; /* 위쪽 이미지 */
-            top: 20px; /* 원하는 위치로 조정 */
+            z-index: 2;
+            width: 150px; /* 하트 이미지 크기 */
+            top: -10px; /* 하트 위치 */
         }
         .verse-box {
             padding: 40px 30px;
@@ -143,6 +147,7 @@
             margin-top: 10px;
             display: none; /* 처음에는 숨김 */
         }
+
         /* 반응형 스타일 */
         @media (max-width: 768px) {
             h1 {
