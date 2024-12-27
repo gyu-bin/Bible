@@ -7,6 +7,7 @@
 
     <title>2025 나의 말씀뽑기</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dongle:wght@400;700&display=swap" rel="stylesheet">
     <!-- Open Graph Meta Tags -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="2025 내게 주신 하나님의 말씀">
@@ -25,7 +26,7 @@
     <style>
         body {
             margin: 0;
-            font-family: 'Arial', sans-serif;
+            font-family: "Dongle", serif;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -40,14 +41,15 @@
             text-align: center;
         }
         h1 {
-            font-size: 4rem;
+            font-size: 70px; !important;
             font-weight: bold;
             color: #b63e3e;
             margin: 0;
+            font-style: normal;
         }
 
         h2 {
-            font-size: 1.2rem;
+            font-size: 30px !important;
             font-weight: 400;
             color: #b63e3e;
             background-color: #fff;
@@ -81,10 +83,10 @@
             opacity: 1;
         }
         .verse {
-            font-size: 1.8rem;
             font-weight: bold;
             color: #6e4f3a;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            font-size: 2rem; !important;
         }
         .reference {
             margin-top: 15px;
@@ -94,7 +96,7 @@
         button {
             background: linear-gradient(to right, #ff5252, #ff7979);
             color: white;
-            font-size: 30px;
+            font-size: 30px; !important;
             font-weight: bold;
             padding: 15px 30px;
             border: none;
@@ -131,7 +133,7 @@
             background: linear-gradient(to right, #ff6f61, #ff8a65);
         }
         .loading-text {
-            font-size: 1.2rem;
+            font-size: 2rem; !important;
             color: #8c6f54;
             margin-top: 10px;
             display: none; /* 처음에는 숨김 */
@@ -168,7 +170,7 @@
             }
             .verse-box {
                 padding: 10px; /* 모바일 여백 추가 */
-                margin: 0 10px; /* 양쪽 여백 */
+                margin: 40px 10px; /* 양쪽 여백 */
             }
             .verse {
                 font-size: 1.2rem;
@@ -185,8 +187,8 @@
 </head>
 <body>
 <div class="container">
-    <h1>2025 내게 주신 하나님의 말씀</h1>
-    <h2>지인들과 함께 내게 주신 말씀을 나눠보세요</h2>
+    <h1 id="h1">2025 내게 주신 하나님의 말씀</h1>
+    <h2 id="h2">지인들과 함께 내게 주신 말씀을 나눠보세요</h2>
     <div class="imageContainer">
         <img src="https://gyu-bin.github.io/Bible/heartandbible.png" alt="Bible" class="bible">
     </div>
@@ -234,20 +236,8 @@
         kakaoButton.style.border = 'none'; // 버튼 테두리 제거
         kakaoButton.style.cursor = 'pointer';
         kakaoButton.style.display = 'none'; // 처음에는 숨김
+        kakaoButton.style.fontFamily = "Dongle"
         kakaoButton.id = 'shareButton';
-
-        // kakaoButton.innerText = '카카오톡 공유';
-        /*kakaoButton.style.margin = '20px auto'; // 버튼을 중앙에 배치
-        kakaoButton.style.display = 'block';    // block 속성으로 중앙 정렬 보장
-        kakaoButton.style.padding = '10px 20px';
-        kakaoButton.style.background = '#FEE500';
-        kakaoButton.style.color = '#3D1D1E';
-        kakaoButton.style.border = 'none';
-        kakaoButton.style.borderRadius = '5px';
-        kakaoButton.style.cursor = 'pointer';
-        kakaoButton.style.display = 'none'; // 처음에는 숨김
-        kakaoButton.id = 'shareButton'
-        kakaoButton.addEventListener('click', shareToKakao);*/
 
         kakaoButton.appendChild(kakaoIcon);
         // 클릭 이벤트 추가
@@ -385,6 +375,8 @@
 
             // 버튼 텍스트 변경
             verseButton.innerText = "다시 뽑기";
+            verseButton.style.fontFamily =  "Dongle";
+            verseButton.style.fontSize = '1.5rem'
 
             // 로딩 텍스트 및 게이지 바 활성화
             loadingText.style.display = "block";
@@ -417,6 +409,8 @@
                 download.style.display = "block"
                 download.style.margin = "20px auto"; // 다운로드 버튼 가운데 정렬
                 download.style.textAlign = "center"; // 텍스트 정렬 보장
+                download.style.fontFamily =  "Dongle";
+                download.style.fontSize = '1.5rem'
 
                 console.log("선택된 말씀:", selectedVerse);
             }, 5000); // 5초 딜레이
