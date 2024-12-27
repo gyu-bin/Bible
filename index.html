@@ -41,60 +41,67 @@
         }
 
         .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
             text-align: center;
-            max-width: 90%; /* 컨테이너 크기 제한 */
         }
         h1 {
-            font-size: 70px; !important;
+            font-size: 2.5rem;
             font-weight: bold;
             color: #b63e3e;
             margin: 0;
-            font-style: normal;
         }
 
         h2 {
-            font-size: 25px !important;
+            font-size: 1.2rem;
             font-weight: 400;
             color: #b63e3e;
             background-color: #fff;
-            padding: 5px 15px;
+            padding: 10px 20px;
             border-radius: 20px;
             display: inline-block;
-            margin-top: 10px;
+            margin: 10px auto;
         }
         .imageContainer {
             position: relative;
-            top: 50px;
-            /*width: 300px; !* 이미지 컨테이너 크기 *!*/
+            margin: 20px auto;
         }
 
         .imageContainer .bible {
             z-index: 1;
-            width: 300px; /* 성경 이미지 크기 */
+            width: 80%; /* 이미지 크기를 반응형으로 조정 */
+            max-width: 300px; /* 최대 크기 제한 */
         }
 
         .verse-box {
+            display: none; /* 처음에는 화면에서 완전히 숨김 */
             padding: 40px 30px;
-            max-width: 90%;
+            max-width: 600px;
             margin: 20px auto;
             background: #fff;
             border-radius: 15px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
             opacity: 0;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.5s ease, display 0.5s ease; /* 애니메이션 추가 */
         }
+
         .verse-box.show {
+            display: block; /* 보일 때 화면에 표시 */
             opacity: 1;
         }
+
         .verse {
             font-weight: bold;
             color: #6e4f3a;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-            font-size: 2rem; !important;
+            font-size: 1.5rem;
         }
+
         .reference {
-            margin-top: 15px;
-            font-size: 1.2rem;
+            margin-top: 10px;
+            font-size: 1rem;
             color: #8c6f54;
         }
         button {
@@ -145,22 +152,27 @@
         #downloadButton{
             display: none;
         }
+        /* 반응형 스타일 */
         @media (max-width: 768px) {
             h1 {
-                font-size: 2rem; /* 제목 크기 축소 */
+                font-size: 2rem;
             }
+
             h2 {
-                font-size: 1rem; /* 부제목 크기 축소 */
-            }
-            .verse {
-                font-size: 1.4rem; /* 말씀 크기 조정 */
-            }
-            .reference {
-                font-size: 0.9rem; /* 참조 크기 조정 */
-            }
-            button {
-                padding: 10px 18px; /* 버튼 크기 조정 */
                 font-size: 1rem;
+            }
+
+            .verse {
+                font-size: 1.2rem;
+            }
+
+            .reference {
+                font-size: 0.9rem;
+            }
+
+            button {
+                padding: 8px 16px;
+                font-size: 0.9rem;
             }
         }
 
@@ -168,22 +180,22 @@
             h1 {
                 font-size: 1.8rem;
             }
+
             h2 {
-                font-size: 0.9rem;
+                font-size: 0.8rem;
             }
-            .verse-box {
-                padding: 15px; /* 모바일 여백 추가 */
-                margin: 10px auto; /* 간격 조정 */
-            }
+
             .verse {
-                font-size: 1.2rem;
+                font-size: 1rem;
             }
+
             .reference {
                 font-size: 0.8rem;
             }
+
             button {
-                padding: 8px 16px;
-                font-size: 0.9rem; /* 버튼 글꼴 크기 조정 */
+                padding: 8px 12px;
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -311,7 +323,7 @@
 
         document.getElementById("downloadButton").addEventListener("click", () => {
             const resultContainer = document.getElementById("verseBox");
-
+            resultContainer.classList.add("show"); // show 클래스 추가로 표시
             if (resultContainer) {
                 html2canvas(resultContainer).then(canvas => {
                     canvas.toBlob(blob => {
@@ -361,4 +373,4 @@
 </script>
 </body>
 </html>
-<!--인스타연동-->
+<!--인스타연동, 소리 넣기, 뽑기 글자 디자인변경, 다운(웹 가능)-->
