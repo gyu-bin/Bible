@@ -58,26 +58,15 @@
         }
         .imageContainer {
             position: relative;
+            top: 100px;
             /*width: 300px; !* 이미지 컨테이너 크기 *!*/
-            margin-bottom: 30px; /* 버튼과의 간격 */
-        }
-
-        .imageContainer img {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
         }
 
         .imageContainer .bible {
             z-index: 1;
-            width: 300px; /* 성경 이미지 크기 */
+            width: 350px; /* 성경 이미지 크기 */
         }
 
-        .imageContainer .heart {
-            z-index: 2;
-            width: 150px; /* 하트 이미지 크기 */
-            top: -10px; /* 하트 위치 */
-        }
         .verse-box {
             padding: 40px 30px;
             max-width: 600px;
@@ -197,8 +186,8 @@
     <h1>2025 내게 주신 하나님의 말씀</h1>
     <h2>지인들과 함께 내게 주신 말씀을 나눠보세요</h2>
     <div class="imageContainer">
-        <img src="https://gyu-bin.github.io/Bible/bible.png" alt="Bible" class="bible">
-        <img src="https://gyu-bin.github.io/Bible/heart.png" alt="Heart" class="heart">
+        <img src="/heartandbible.png" alt="Bible" class="bible">
+<!--        <img src="https://gyu-bin.github.io/Bible/heartandbible.png" alt="Bible" class="bible">-->
     </div>
     <div class="verse-box" id="verseBox">
         <p class="verse" id="verse">"너희는 세상의 빛이라"</p>
@@ -222,7 +211,6 @@
         const progressBar = document.getElementById("progressBar");
         const progressContainer = document.getElementById("progressContainer");
         const loadingText = document.getElementById("loadingText");
-        const imageContainer = document.getElementById("imageContainer");
 
         // 카카오톡 공유 버튼 생성
         const kakaoButton = document.createElement('button');
@@ -388,7 +376,6 @@
                 progressBar.style.width = "0%";
                 verseBox.classList.add("show");
 
-
                 // 카카오톡 공유 버튼 표시
                 kakaoButton.style.display = "block";
 
@@ -406,7 +393,7 @@
                 content: {
                     title: '2025 말씀뽑기',
                     description: `제가 뽑은 말씀은 ${verse.innerText} (${reference.innerText}) 이에요!`,
-                    imageUrl: 'https://i.pinimg.com/736x/3b/0c/81/3b0c8108fe21fa66975715d83964bb34.jpg', // 업로드한 이미지 경로
+                    imageUrl: 'https://gyu-bin.github.io/Bible/heartandbible.png', // 업로드한 이미지 경로
                     link: {
                         webUrl: 'https://gyu-bin.github.io/Bible/',
                         mobileWebUrl: 'https://gyu-bin.github.io/Bible/'
