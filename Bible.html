@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025 나의 말씀뽑기</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #f3e6d6, #f7d5b5);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        .container {
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #5e4b3f;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+        }
+        .verse-box {
+            padding: 40px 30px;
+            max-width: 600px;
+            margin: 20px auto;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .verse-box.show {
+            opacity: 1;
+        }
+        .verse {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #6e4f3a;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        .reference {
+            margin-top: 15px;
+            font-size: 1.2rem;
+            color: #8c6f54;
+        }
+        button {
+            margin-top: 20px;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #fff;
+            background: linear-gradient(to right, #ff6f61, #ff8a65);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .progress-container {
+            margin-top: 20px;
+            position: relative;
+            width: 80%;
+            height: 10px;
+            background: #f3e6d6;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 20px auto;
+            display: none; /* 처음에는 숨김 */
+        }
+        .progress-bar {
+            position: absolute;
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(to right, #ff6f61, #ff8a65);
+        }
+        .loading-text {
+            font-size: 1.2rem;
+            color: #8c6f54;
+            margin-top: 10px;
+            display: none; /* 처음에는 숨김 */
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>2025 내게 주신 하나님의 말씀</h1>
+    <h2>지인들과 함께 내게 주신 말씀을 나눠보세요</h2>
+    <div class="verse-box" id="verseBox">
+        <p class="verse" id="verse">"너희는 세상의 빛이라"</p>
+        <p class="reference" id="reference">마태복음 5:14</p>
+    </div>
+    <div class="progress-container" id="progressContainer">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <p class="loading-text" id="loadingText">말씀을 뽑고 있습니다...</p>
+    <button id="verseButton">말씀 뽑기</button>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        console.log("DOMContentLoaded 이벤트 실행됨");
+
+        // DOM 요소 가져오기
+        const verseButton = document.getElementById("verseButton");
+        const verseBox = document.getElementById("verseBox");
+        const verseText = document.getElementById("verse");
+        const referenceText = document.getElementById("reference");
+        const progressBar = document.getElementById("progressBar");
+        const progressContainer = document.getElementById("progressContainer");
+        const loadingText = document.getElementById("loadingText");
+
+        if (!verseButton || !verseBox || !verseText || !referenceText || !progressBar || !loadingText || !progressContainer) {
+            console.error("필수 요소를 찾을 수 없습니다!");
+            return;
+        }
+
+        console.log("버튼 찾음:", verseButton);
+
+        // 말씀 목록
+        const verses = [
+            { verse: "내게 능력 주시는 자 안에서 내가 모든 것을 할 수 있느니라.", reference: "빌립보서 4:13" },
+            { verse: "우리가 알거니와 하나님을 사랑하는 자, 곧 그의 뜻대로 부르심을 입은 자들에게는 모든 것이 합력하여 선을 이루느니라.", reference: "로마서 8:28" },
+            { verse: "두려워하지 말라. 내가 너와 함께 함이라 놀라지 말라 나는 네 하나님이 됨이라 내가 너를 굳세게 하리라. 참으로 너를 도와주리라 참으로 나의 의로운 오른손으로 너를 붙들리라.", reference: "이사야 41:10" },
+            { verse: "수고하고 무거운 짐 진 자들아 다 내게로 오라. 내가 너희를 쉬게 하리라.", reference: "마태복음 11:28" },
+            { verse: "주의 말씀은 내 발에 등이요 내 길에 빛이니이다.", reference: "시편 119:105" },
+            { verse: "아무것도 염려하지 말고, 오직 모든 일에 기도와 간구로 너희 구할 것을 감사함으로 하나님께 아뢰라. 그리하면 모든 지각에 뛰어난 하나님의 평강이 그리스도 예수 안에서 너희 마음과 생각을 지키시리라.", reference: "빌립보서 4:6-7" },
+            { verse: "너의 행사를 여호와께 맡기라. 그리하면 네가 경영하는 것이 이루어지리라.", reference: "잠언 16:3" },
+            { verse: "내 형제들아, 너희가 여러 가지 시험을 당하거든 온전히 기쁘게 여기라. 이는 너희 믿음의 시련이 인내를 만들어 내는 줄 너희가 앎이라.", reference: "야고보서 1:2-4" },
+            { verse: "그러므로 우리가 낙심하지 아니하노니 우리의 겉사람은 낡아지나 우리의 속사람은 날로 새로워지도다.", reference: "고린도후서 4:16" },
+            { verse: "하나님이 우리에게 주신 것은 두려워하는 마음이 아니요 오직 능력과 사랑과 절제하는 마음이니.", reference: "디모데후서 1:7" },
+            { verse: "그의 노여움은 잠깐이요 그의 은총은 평생이로다 저녁에는 울음이 깃들지라도 아침에는 기쁨이 오리로다.", reference: "시편 30:5" },
+            { verse: "무슨 일을 하든지 마음을 다하여 주께 하듯 하고 사람에게 하듯 하지 말라.", reference: "골로새서 3:23" },
+            { verse: "모든 지킬 만한 것 중에 더욱 네 마음을 지키라 생명의 근원이 이에서 남이니라.", reference: "잠언 4:23" },
+            { verse: "너희가 내 안에 거하고 내 말이 너희 안에 거하면 무엇이든지 원하는 대로 구하라. 그리하면 이루리라.", reference: "요한복음 15:7" },
+            { verse: "나의 영혼아 잠잠히 하나님만 바라라. 무릇 나의 소망이 그로부터 나오는도다.", reference: "시편 62:5" },
+            { verse: "그러므로 내 사랑하는 형제들아 견고하며 흔들리지 말며 항상 주의 일에 더욱 힘쓰는 자들이 되라. 이는 너희 수고가 주 안에서 헛되지 않은 줄 앎이라.", reference: "고린도전서 15:58" },
+            { verse: "소망의 하나님이 모든 기쁨과 평강을 믿음 안에서 너희에게 충만하게 하사 성령의 능력으로 소망이 넘치게 하시기를 원하노라.", reference: "로마서 15:13" },
+            { verse: "주께서 생명의 길을 내게 보이시리니 주의 앞에는 충만한 기쁨이 있고 주의 오른쪽에는 영원한 즐거움이 있나이다.", reference: "시편 16:11" },
+            { verse: "사람의 마음에는 많은 계획이 있어도 오직 여호와의 뜻만이 완전히 서리라.", reference: "잠언 19:21" },
+            { verse: "구하라 그러면 너희에게 주실 것이요 찾으라 그러면 찾아낼 것이요 문을 두드리라 그러면 너희에게 열릴 것이니.", reference: "마태복음 7:7" },
+            { verse: "기도를 계속하고 기도에 감사함으로 깨어 있으라.", reference: "골로새서 4:2" },
+            { verse: "공의와 인자를 따라 구하는 자는 생명과 공의와 영광을 얻느니라.", reference: "잠언 21:21" },
+            { verse: "내가 두려워하는 날에는 주를 의지하리이다.", reference: "시편 56:3" },
+            { verse: "주 앞에서 낮추라. 그리하면 주께서 너희를 높이시리라.", reference: "야고보서 4:10" },
+            { verse: "여호와 하나님은 해요 방패이시라 여호와께서 은혜와 영화를 주시며 정직히 행하는 자에게 좋은 것을 아끼지 아니하실 것이니이다.", reference: "시편 84:11" },
+            { verse: "사람이 마음으로 자기의 길을 계획할지라도 그의 걸음을 인도하시는 이는 여호와시니라.", reference: "잠언 16:9" },
+            { verse: "그런즉 믿음, 소망, 사랑 이 세 가지는 항상 있을 것인데 그중의 제일은 사랑이라.", reference: "고린도전서 13:13" },
+            { verse: "무엇보다도 뜨겁게 서로 사랑할지니 사랑은 허다한 죄를 덮느니라.", reference: "베드로전서 4:8" },
+            { verse: "항상 기뻐하라 쉬지 말고 기도하라 범사에 감사하라 이는 그리스도 예수 안에서 너희를 향하신 하나님의 뜻이니라.", reference: "데살로니가전서 5:16-18" },
+            { verse: "아무 일에든지 다툼이나 허영으로 하지 말고 오직 겸손한 마음으로 각각 자기보다 남을 낫게 여기며.", reference: "빌립보서 2:3" },
+            { verse: "내가 여호와를 항상 송축하며 내 입술로 항상 주를 찬양하리이다.", reference: "시편 34:1" },
+            { verse: "너희 중에 누구든지 지혜가 부족하거든 모든 사람에게 후히 주시고 꾸짖지 아니하시는 하나님께 구하라. 그리하면 주시리라.", reference: "야고보서 1:5" },
+            { verse: "오직 우리의 시민권은 하늘에 있는지라 거기로부터 구원하는 자 곧 주 예수 그리스도를 기다리노니.", reference: "빌립보서 3:20" },
+            { verse: "일어나라 빛을 발하라 이는 네 빛이 이르렀고 여호와의 영광이 네 위에 임하였음이니라.", reference: "이사야 60:1" },
+            { verse: "너희를 부르신 하나님은 미쁘시니 너희를 우리 주 예수 그리스도의 날에 책망할 것이 없게 하시리라.", reference: "고린도전서 1:9" },
+            { verse: "백성들아 시시로 그를 의지하고 그의 앞에 마음을 토하라 하나님은 우리의 피난처시로다.", reference: "시편 62:8" },
+            { verse: "그러나 내가 가는 길을 그가 아시나니, 그가 나를 단련하신 후에는 내가 정금같이 나오리라.", reference: "욥기 23:10" },
+            { verse: "여호와께서 주시는 복은 사람을 부하게 하고 근심을 겸하여 주지 아니하시느니라.", reference: "잠언 10:22" },
+            { verse: "서로 친절히 하며 불쌍히 여기며 서로 용서하기를 하나님이 그리스도 안에서 너희를 용서하심과 같이 하라.", reference: "에베소서 4:32" },
+            { verse: "주께서는 미쁘사 너희를 굳건하게 하시고 악한 자에게서 지키시리라.", reference: "데살로니가후서 3:3" },
+            { verse: "여호와가 너를 항상 인도하여 메마른 곳에서도 네 영혼을 만족하게 하며 네 뼈를 견고하게 하리니 너는 물 댄 동산 같겠고 물이 끊어지지 아니하는 샘 같을 것이라.", reference: "이사야 58:11" },
+            { verse: "풀은 마르고 꽃은 시드나 우리 하나님의 말씀은 영원히 서리라.", reference: "이사야 40:8" },
+            { verse: "그러므로 너희 담대함을 버리지 말라 이것이 큰 상을 얻게 하느니라 너희에게 인내가 필요함은 너희가 하나님의 뜻을 행한 후에 약속을 받기 위함이라.", reference: "히브리서 10:35-36" },
+            { verse: "이것을 너희에게 이름은 너희로 내 안에서 평안을 누리게 하려 함이라 세상에서는 너희가 환난을 당하나 담대하라 내가 세상을 이기었노라", reference: "요한복음 16:33" },
+            { verse: "나의 반석이시요 나의 구속자이신 여호와여 내 입의 말과 마음의 묵상이 주의 앞에 열납되기를 원하나이다.", reference: "시편 19:14" },
+            { verse: "스스로 속이지 말라 하나님은 업신여김을 받지 아니하시나니 사람이 무엇으로 심든지 그대로 거두리라.", reference: "갈라디아서 6:7" },
+            { verse: "지혜를 얻은 자와 명철을 얻은 자는 복이 있나니.", reference: "잠언 3:13" },
+            { verse: "나의 도움이 천지를 지으신 여호와에게서로다.", reference: "시편 121:2" },
+            { verse: "그런즉 너희가 먹든지 마시든지 무엇을 하든지 다 하나님의 영광을 위하여 하라.", reference: "고린도전서 10:31" },
+            { verse: "너는 마음을 다하고 뜻을 다하고 힘을 다하여 네 하나님 여호와를 사랑하라.", reference: "신명기 6:5" },
+            { verse: "의의 열매는 화평이요 의의 결과는 영원한 평안과 안전이라.", reference: "이사야 32:17" },
+            { verse: "오직 선을 행함과 서로 나누어 주기를 잊지 말라 하나님은 이같은 제사를 기뻐하시느니라.", reference: "히브리서 13:16" },
+            { verse: "그러나 여호와를 의지하며 여호와를 의뢰하는 그 사람은 복을 받을 것이라.", reference: "예레미야 17:7" },
+            { verse: "그런즉 누구든지 그리스도 안에 있으면 새로운 피조물이라 이전 것은 지나갔으니 보라 새 것이 되었도다.", reference: "고린도후서 5:17" },
+            { verse: "내 안에 거하라 나도 너희 안에 거하리라 가지가 포도나무에 붙어 있지 아니하면 스스로 열매를 맺을 수 없음 같이 너희도 내 안에 있지 아니하면 그러하리라.", reference: "요한복음 15:4" },
+            { verse: "또 여호와를 기뻐하라 그가 네 마음의 소원을 네게 이루어 주시리로다.", reference: "시편 37:4" },
+            { verse: "하늘에서는 주 외에 누가 내게 있으리요 땅에서는 주밖에 내가 사모할 이 없나이다.", reference: "시편 73:25" },
+            { verse: "다른 이로써는 구원을 받을 수 없나니 천하 사람 중에 구원을 받을 만한 다른 이름을 우리에게 주신 일이 없음이라 하였더라.", reference: "사도행전 4:12" },
+            { verse: "여호와께서 사람의 걸음을 정하시고 그의 길을 기뻐하시나니 그는 넘어지나 아주 엎드러지지 아니함은 여호와께서 그의 손으로 붙드심이로다.", reference: "시편 37:23-24" },
+            { verse: "네가 물가운데로 지날 때에 내가 함께 할 것이라 강을 건널 때에 물이 너를 침몰하지 못할 것이며 네가 불가운데로 지날 때에 타지도 아니할 것이요 불꽃이 너를 사르지도 못하리니.", reference: "이사야 43:2" },
+            { verse: "끝으로 형제들아 무엇이든지 참되며 무엇이든지 경건하며 무엇이든지 옳으며 무엇이든지 정결하며 무엇이든지 사랑받을 만하며 무엇이든지 칭찬받을 만하며 무슨 덕이 있든지 무슨 기림이 있든지 이것들을 생각하라.", reference: "빌립보서 4:8" },
+            { verse: "믿음이 없이는 하나님을 기쁘시게 하지 못하나니 하나님께 나아가는 자는 반드시 그가 계신 것과 또한 그가 자기를 찾는 자들에게 상 주시는 이심을 믿어야 할지니라.", reference: "히브리서 11:6" },
+            { verse: "우리에게 우리 날 계수함을 가르치사 지혜로운 마음을 얻게 하소서.", reference: "시편 90:12" },
+            { verse: "주는 영이시니 주의 영이 계신 곳에는 자유가 있느니라.", reference: "고린도후서 3:17" },
+            { verse: "그러나 경건은 자족하는 마음이 있으면 큰 이익이 되느니라 우리가 세상에 아무것도 가지고 온 것이 없으매 또한 아무것도 가지고 가지 못하리니.", reference: "디모데전서 6:6-7" },
+            { verse: "위의 것을 생각하고 땅의 것을 생각하지 말라.", reference: "골로새서 3:2" },
+            { verse: "모든 은혜의 하나님 곧 그리스도 안에서 너희를 부르사, 자기의 영원한 영광에 들어가게 하신 이가 잠깐 고난을 받은 너희를 친히 온전하게 하시며 굳건하게 하시며 강하게 하시며 털털하게 하시리라.", reference: "베드로전서 5:10" },
+            { verse: "구제를 좋아하는 자는 풍족하여질 것이요 남을 윤택하게 하는 자는 자기도 윤택하여지리라.", reference: "잠언 11:25" },
+            { verse: "예수께서 이르시되 나는 생명의 떡이니 내게 오는 자는 결코 주리지 아니할 터이요 나를 믿는 자는 영원히 목마르지 아니하리라.", reference: "요한복음 6:35" },
+            { verse: "주 안에서 항상 기뻐하라 내가 다시 말하노니 기뻐하라.", reference: "빌립보서 4:4" },
+            { verse: "우리 주 예수 그리스도와 우리를 사랑하시고 영원한 위로와 좋은 소망을 은혜로 주신 하나님이, 너희 마음을 위로하시고 모든 선한 일과 말에 굳건하게 하시기를 원하노라.", reference: "데살로니가후서 2:16-17" },
+            { verse: "그러므로 하나님의 전신 갑주를 취하라 이는 악한 날에 너희가 능히 대적하고 모든 일을 행한 후에 서기 위함이라.", reference: "에베소서 6:13" },
+            { verse: "지혜가 제일이니 지혜를 얻으라. 네가 얻은 모든 것을 가지고 명철을 얻을지니라.", reference: "잠언 4:7" },
+            { verse: "주께서 나의 등불을 켜시며, 여호와 내 하나님이 내 흑암을 밝히시리이다.", reference: "시편 18:28" },
+            { verse: "여호와는 너를 지키시는 이시라. 여호와께서 네 오른쪽에서 네 그늘이 되시나니, 낮의 해가 너를 상하지 아니하며 밤의 달도 너를 해치지 아니하리로다.", reference: "시편 121:5-6" },
+            { verse: "너는 내게 부르짖으라. 내가 네게 응답하겠고 네가 알지 못하는 크고 은밀한 일을 네게 보이리라.", reference: "예레미야 33:3" },
+            { verse: "그를 향하여 우리가 가진 바 담대함이 이것이니, 그의 뜻대로 무엇을 구하면 들으심이라.", reference: "요한일서 5:14" },
+            { verse: "너희는 마음에 근심하지 말라. 하나님을 믿으니 또 나를 믿으라.", reference: "요한복음 14:1" },
+            { verse: "나의 하나님이 그리스도 예수 안에서 영광 가운데 그의 풍성한 대로 너희 모든 쓸 것을 채우시리라.", reference: "빌립보서 4:19" },
+            { verse: "여호와여 주께서 나를 살펴보셨으므로 나를 아시나이다 주께서 내가 앉고 일어섬을 아시며 멀리서도 나의 생각을 밝히 아시오며.", reference: "시편 139:1-2" },
+            { verse: "나는 알파와 오메가요 처음과 마지막이요 시작과 끝이라.", reference: "요한계시록 22:13" },
+            { verse: "그러므로 누구든지 나의 이 말을 듣고 행하는 자는 그 집을 반석 위에 지은 지혜로운 사람 같으리니.", reference: "마태복음 7:24" },
+            { verse: "우리가 주목하는 것은 보이는 것이 아니요 보이지 않는 것이니 보이는 것은 잠깐이요 보이지 않는 것은 영원함이라.", reference: "고린도후서 4:18" },
+            { verse: "너희는 여호와를 영원히 신뢰하라. 주 여호와는 영원한 반석이심이로다.", reference: "이사야 26:4" },
+            { verse: "우리가 이 소망을 가지고 있는 것은 영혼의 닻 같아서 튼튼하고 견고하여 휘장 안에 들어가나니.", reference: "히브리서 6:19" },
+            { verse: "너희는 여호와를 만날 만한 때에 찾으라 가까이 계실 때에 그를 부르라.", reference: "이사야 55:6" },
+            { verse: "의인의 열매는 생명 나무라 지혜로운 자는 사람을 얻느니라.", reference: "잠언 11:30" },
+            { verse: "그러므로 너희가 기쁨으로 구원의 우물들에서 물을 길으리로다.", reference: "이사야 12:3" },
+            { verse: "겸손과 여호와를 경외함의 보상은 재물과 영광과 생명이니라.", reference: "잠언 22:4" },
+            { verse: "그러나 이 모든 일에 우리를 사랑하시는 이로 말미암아 우리가 넉넉히 이기느니라.", reference: "로마서 8:37" },
+            { verse: "주의 법을 사랑하는 자에게는 큰 평안이 있으니, 그들에게 장애물이 없으리이다.", reference: "시편 119:165" },
+            { verse: "그는 목자 같이 자기 양 떼를 먹이시며, 어린 양을 그 팔로 모아 품에 안으시며, 젖 먹이는 암컷들을 온순히 인도하시리로다.", reference: "이사야 40:11" },
+            { verse: "그러나 온유한 자들은 땅을 차지하며, 풍성한 화평으로 즐거워하리로다.", reference: "시편 37:11" },
+            { verse: "아무 일에든지 다툼이나 허영으로 하지 말고 오직 겸손한 마음으로 각각 자기보다 남을 낫게 여기며 각각 자기 일을 돌볼 뿐더러 또한 각각 다른 사람들의 일을 돌보아.", reference: "빌립보서 2:3-4" },
+            { verse: "형제를 사랑하여 서로 우애하고, 존경하기를 서로 먼저 하며.", reference: "로마서 12:10" },
+            { verse: "무릇 더러운 말은 너희 입 밖에도 내지 말고, 오직 덕을 세우는 데 소용되는 대로 선한 말을 하여 듣는 자들에게 은혜를 끼치게 하라.", reference: "에베소서 4:29" },
+            { verse: "그러므로 너희가 더욱 힘써 너희 믿음에 덕을, 덕에 지식을, 지식에 절제를, 절제에 인내를, 인내에 경건을, 경건에 형제 우애를, 형제 우애에 사랑을 더하라.", reference: "베드로후서 1:5-7" },
+            { verse: "나는 마음이 온유하고 겸손하니 나의 멍에를 메고 내게 배우라 그리하면 너희 마음이 쉼을 얻으리니.", reference: "마태복음 11:29" },
+            { verse: "진리를 알지니, 진리가 너희를 자유롭게 하리라.", reference: "요한복음 8:32" },
+            { verse: "나를 믿는 자는 성경에 이름과 같이 그의 배에서 생수의 강이 흘러나오리라 하시니.", reference: "요한복음 7:38" },
+        ];
+
+
+        // 버튼 클릭 이벤트 등록
+        verseButton.addEventListener("click", () => {
+            console.log("버튼 클릭 이벤트 실행");
+
+            // 버튼 텍스트 변경
+            verseButton.innerText = "다시 뽑기";
+
+            // 로딩 텍스트 및 게이지 바 활성화
+            loadingText.style.display = "block";
+            progressContainer.style.display = "block";
+            progressBar.style.width = "0%";
+
+            // 게이지 바 애니메이션 시작
+            setTimeout(() => {
+                progressBar.style.transition = "width 5s linear";
+                progressBar.style.width = "100%";
+            }, 10);
+
+            // 5초 후 랜덤 말씀 표시
+            setTimeout(() => {
+                const randomIndex = Math.floor(Math.random() * verses.length);
+                const selectedVerse = verses[randomIndex];
+
+                // 말씀과 참조 업데이트
+                verseText.innerText = `"${selectedVerse.verse}"`;
+                referenceText.innerText = selectedVerse.reference;
+
+                // 로딩 텍스트 숨김 및 말씀 표시
+                loadingText.style.display = "none";
+                progressContainer.style.display = "none";
+                progressBar.style.width = "0%";
+                verseBox.classList.add("show");
+
+                console.log("선택된 말씀:", selectedVerse);
+            }, 5000); // 5초 딜레이
+        });
+    });
+</script>
+</body>
+</html>
