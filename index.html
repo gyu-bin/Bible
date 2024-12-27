@@ -332,13 +332,15 @@
             }, 5000); // 5초 딜레이
         });
 
+        // 카카오 초기화
+        Kakao.init('9c9f412be3a3a5cac82dafc3426676cc');
         // 카카오톡 공유 기능
         function shareToKakao() {
             Kakao.Link.sendDefault({
                 objectType: 'feed',
                 content: {
                     title: '2025 나의 말씀뽑기',
-                    description: `말씀: ${verseText.innerText}\n출처: ${referenceText.innerText}`,
+                    description: `말씀: ${verse.innerText}\n출처: ${reference.innerText}`,
                     imageUrl: 'https://gyu-bin.github.io/Bible/image.jpg', // 이미지 URL
                     link: {
                         webUrl: 'https://gyu-bin.github.io/Bible/', // 배포된 사이트 URL
@@ -356,9 +358,6 @@
                 ]
             });
         }
-
-        // 카카오 초기화
-        Kakao.init('9c9f412be3a3a5cac82dafc3426676cc');
     });
 </script>
 
