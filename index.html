@@ -353,12 +353,16 @@
                         // 동적으로 전달할 데이터 (템플릿 설정에서 정의한 값들)
                         title: '2025 내게 주신 하나님의 말씀', // 템플릿에 전달할 title
                         description: `제가 뽑은 말씀은 ${verse.innerText} (${reference.innerText}) 이에요!`,
+                        link: {
+                            mobileWebUrl: 'https://gyu-bin.github.io/Bible/',
+                            webUrl: 'https://gyu-bin.github.io/Bible/'
+                        }
+
                     }
                 });
             });
         }
     });
-
 </script>
 </body>
 </html>
