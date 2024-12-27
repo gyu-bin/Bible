@@ -311,12 +311,25 @@
 
             if (resultContainer) {
                 html2canvas(resultContainer).then(canvas => {
-                    // 이미지를 변환하고 다운로드
-                    const image = canvas.toDataURL("image/png");
-                    const link = document.createElement("a");
-                    link.href = image;
-                    link.download = "bible-result.png";
-                    link.click();
+                    canvas.toBlob(blob => {
+                        if (blob) {
+                            const url = URL.createObjectURL(blob);
+                            const link = document.createElement("a");
+                            link.href = url;
+                            link.download = "bible-result.png";
+
+                            if (typeof link.click === "function") {
+                                link.click();
+                            } else {
+                                // iOS Safari 대안
+                                window.open(url, "_blank");
+                            }
+
+                            URL.revokeObjectURL(url);
+                        } else {
+                            console.error("Blob 변환 중 오류 발생.");
+                        }
+                    });
                 }).catch(err => {
                     console.error("이미지 저장 중 오류 발생:", err);
                 });
@@ -324,6 +337,7 @@
                 console.error("요소 #resultContainer를 찾을 수 없습니다.");
             }
         });
+
 
         // 카카오 초기화
         Kakao.init('0288684a26b770807358f1c5e855b1c1');
