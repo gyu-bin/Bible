@@ -198,43 +198,19 @@
     </div>
     <p class="loading-text" id="loadingText">말씀을 뽑고 있습니다...</p>
     <button id="verseButton">말씀 뽑기</button>
-    <button id="saveImageButton" style="margin-top: 20px;">이미지 저장</button>
 </div>
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         console.log("DOMContentLoaded 이벤트 실행됨");
 
+        const verseButton = document.getElementById("verseButton");
         const verseBox = document.getElementById("verseBox");
         const verseText = document.getElementById("verse");
         const referenceText = document.getElementById("reference");
         const progressBar = document.getElementById("progressBar");
         const progressContainer = document.getElementById("progressContainer");
         const loadingText = document.getElementById("loadingText");
-
-        //이미지 다운
-        document.getElementById('saveImageButton').addEventListener('click', () => {
-            const captureTarget = document.querySelector('.imageContainer');
-
-            // 대상 요소가 화면에 보이는 상태인지 확인
-            if (!captureTarget) {
-                console.error('캡처 대상 요소를 찾을 수 없습니다.');
-                return;
-            }
-
-            // 화면 캡처
-            html2canvas(captureTarget, {
-                useCORS: true // 외부 이미지 사용 가능하게 설정
-            }).then(canvas => {
-                const link = document.createElement('a');
-                link.href = canvas.toDataURL('image/png'); // 캡처된 이미지를 데이터 URL로 변환
-                link.download = 'bible-result.png'; // 파일 이름 설정
-                link.click(); // 다운로드 트리거
-            }).catch(error => {
-                console.error('이미지 저장 중 오류 발생:', error);
-            });
-        });
-
 
         // 카카오톡 공유 버튼 생성
         const kakaoButton = document.createElement('button');
@@ -421,37 +397,27 @@
         Kakao.init('0288684a26b770807358f1c5e855b1c1');
         // 카카오톡 공유 기능
         function shareToKakao() {
-            // 캡처할 대상 선택
-            const captureTarget = document.querySelector('.imageContainer');
 
-            // 화면 캡처
-            html2canvas(captureTarget).then(canvas => {
-                const image = canvas.toDataURL('image/png'); // 캡처된 이미지 데이터
-
-                // Kakao API로 이미지 포함하여 공유
-                Kakao.Link.sendDefault({
-                    objectType: 'feed',
-                    content: {
-                        title: '2025 말씀뽑기',
-                        description: `제가 뽑은 말씀은 ${verse.innerText} (${reference.innerText}) 이에요!`,
-                        imageUrl: image, // 캡처된 이미지 사용
+            Kakao.Link.sendDefault({
+                objectType: 'feed',
+                content: {
+                    title: '2025 말씀뽑기',
+                    description: `제가 뽑은 말씀은 ${verse.innerText} (${reference.innerText}) 이에요!`,
+                    imageUrl: 'https://gyu-bin.github.io/Bible/thumbnail.png', // 업로드한 이미지 경로
+                    link: {
+                        webUrl: 'https://gyu-bin.github.io/Bible/',
+                        mobileWebUrl: 'https://gyu-bin.github.io/Bible/'
+                    }
+                },
+                buttons: [
+                    {
+                        title: '나도 말씀 뽑으러 가기',
                         link: {
                             webUrl: 'https://gyu-bin.github.io/Bible/',
                             mobileWebUrl: 'https://gyu-bin.github.io/Bible/'
                         }
-                    },
-                    buttons: [
-                        {
-                            title: '나도 말씀 뽑으러 가기',
-                            link: {
-                                webUrl: 'https://gyu-bin.github.io/Bible/',
-                                mobileWebUrl: 'https://gyu-bin.github.io/Bible/'
-                            }
-                        }
-                    ]
-                });
-            }).catch(error => {
-                console.error('이미지 캡처 중 오류 발생:', error);
+                    }
+                ]
             });
         }
     });
