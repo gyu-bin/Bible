@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+
     <title>2025 나의 말씀뽑기</title>
     <style>
         body {
@@ -314,6 +316,54 @@
             }, 5000); // 5초 딜레이
         });
     });
+
+    /*// 카카오톡 초기화
+    Kakao.init('9c9f412be3a3a5cac82dafc3426676cc'); // 실제 APP_KEY로 대체하세요
+    console.log(`Kakao SDK 초기화 상태: ${Kakao.isInitialized()}`);
+
+    // 카카오톡 공유 기능
+    function shareToKakao() {
+        console.log("카카오톡 공유 시작");
+        console.log(`말씀: ${verse.innerText}\n출처: ${reference.innerText}`)
+
+        Kakao.Link.sendDefault({
+            objectType: 'feed',
+            content: {
+                title: '2025 나의 말씀뽑기',
+                description: `말씀: ${verse.innerText}\n출처: ${reference.innerText}`,
+                imageUrl: 'https://your-image-url.com/image.png', // 공유할 이미지 URL
+                link: {
+                    webUrl: 'https://your-site-url.com',
+                    mobileWebUrl: 'https://your-site-url.com'
+                }
+            },
+            buttons: [
+                {
+                    title: '말씀 확인하기',
+                    link: {
+                        webUrl: 'https://your-site-url.com',
+                        mobileWebUrl: 'https://your-site-url.com'
+                    }
+                }
+            ]
+        });
+    }
+
+    // HTML에 카카오톡 공유 버튼 추가
+    const kakaoButton = document.createElement('button');
+    kakaoButton.innerText = '카카오톡 공유';
+    kakaoButton.style.marginTop = '10px';
+    kakaoButton.style.padding = '10px 20px';
+    kakaoButton.style.background = '#FEE500';
+    kakaoButton.style.color = '#3D1D1E';
+    kakaoButton.style.border = 'none';
+    kakaoButton.style.borderRadius = '5px';
+    kakaoButton.style.cursor = 'pointer';
+    kakaoButton.addEventListener('click', shareToKakao);
+
+    // 버튼을 DOM에 추가
+    document.querySelector('.container').appendChild(kakaoButton);*/
+
 </script>
 </body>
 </html>
