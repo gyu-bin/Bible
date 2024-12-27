@@ -158,7 +158,6 @@
     document.addEventListener("DOMContentLoaded", () => {
         console.log("DOMContentLoaded 이벤트 실행됨");
 
-        // DOM 요소 가져오기
         const verseButton = document.getElementById("verseButton");
         const verseBox = document.getElementById("verseBox");
         const verseText = document.getElementById("verse");
@@ -167,12 +166,27 @@
         const progressContainer = document.getElementById("progressContainer");
         const loadingText = document.getElementById("loadingText");
 
+        // 카카오톡 공유 버튼 생성
+        const kakaoButton = document.createElement('button');
+        kakaoButton.innerText = '카카오톡 공유';
+        kakaoButton.style.margin = '20px auto'; // 버튼을 중앙에 배치
+        kakaoButton.style.display = 'block';    // block 속성으로 중앙 정렬 보장
+        kakaoButton.style.padding = '10px 20px';
+        kakaoButton.style.background = '#FEE500';
+        kakaoButton.style.color = '#3D1D1E';
+        kakaoButton.style.border = 'none';
+        kakaoButton.style.borderRadius = '5px';
+        kakaoButton.style.cursor = 'pointer';
+        kakaoButton.style.display = 'none'; // 처음에는 숨김
+        kakaoButton.addEventListener('click', shareToKakao);
+
+        // 카카오톡 공유 버튼을 DOM에 추가 (디자인을 위해 아래로 배치)
+        document.querySelector('.container').appendChild(kakaoButton);
+
         if (!verseButton || !verseBox || !verseText || !referenceText || !progressBar || !loadingText || !progressContainer) {
             console.error("필수 요소를 찾을 수 없습니다!");
             return;
         }
-
-        console.log("버튼 찾음:", verseButton);
 
         // 말씀 목록
         const verses = [
@@ -279,7 +293,6 @@
         ];
 
 
-        // 버튼 클릭 이벤트 등록
         verseButton.addEventListener("click", () => {
             console.log("버튼 클릭 이벤트 실행");
 
@@ -297,7 +310,7 @@
                 progressBar.style.width = "100%";
             }, 10);
 
-            // 5초 후 랜덤 말씀 표시
+            // 5초 후 랜덤 말씀 표시 및 공유 버튼 활성화
             setTimeout(() => {
                 const randomIndex = Math.floor(Math.random() * verses.length);
                 const selectedVerse = verses[randomIndex];
@@ -312,58 +325,42 @@
                 progressBar.style.width = "0%";
                 verseBox.classList.add("show");
 
+                // 카카오톡 공유 버튼 표시
+                kakaoButton.style.display = "block";
+
                 console.log("선택된 말씀:", selectedVerse);
             }, 5000); // 5초 딜레이
         });
-    });
 
-    /*// 카카오톡 초기화
-    Kakao.init('9c9f412be3a3a5cac82dafc3426676cc'); // 실제 APP_KEY로 대체하세요
-    console.log(`Kakao SDK 초기화 상태: ${Kakao.isInitialized()}`);
-
-    // 카카오톡 공유 기능
-    function shareToKakao() {
-        console.log("카카오톡 공유 시작");
-        console.log(`말씀: ${verse.innerText}\n출처: ${reference.innerText}`)
-
-        Kakao.Link.sendDefault({
-            objectType: 'feed',
-            content: {
-                title: '2025 나의 말씀뽑기',
-                description: `말씀: ${verse.innerText}\n출처: ${reference.innerText}`,
-                imageUrl: 'https://your-image-url.com/image.png', // 공유할 이미지 URL
-                link: {
-                    webUrl: 'https://your-site-url.com',
-                    mobileWebUrl: 'https://your-site-url.com'
-                }
-            },
-            buttons: [
-                {
-                    title: '말씀 확인하기',
+        // 카카오톡 공유 기능
+        function shareToKakao() {
+            Kakao.Link.sendDefault({
+                objectType: 'feed',
+                content: {
+                    title: '2025 나의 말씀뽑기',
+                    description: `말씀: ${verseText.innerText}\n출처: ${referenceText.innerText}`,
+                    imageUrl: 'https://gyu-bin.github.io/Bible/image.jpg', // 이미지 URL
                     link: {
-                        webUrl: 'https://your-site-url.com',
-                        mobileWebUrl: 'https://your-site-url.com'
+                        webUrl: 'https://gyu-bin.github.io/Bible/', // 배포된 사이트 URL
+                        mobileWebUrl: 'https://gyu-bin.github.io/Bible/'
                     }
-                }
-            ]
-        });
-    }
+                },
+                buttons: [
+                    {
+                        title: '말씀 확인하기',
+                        link: {
+                            webUrl: 'https://gyu-bin.github.io/Bible/',
+                            mobileWebUrl: 'https://gyu-bin.github.io/Bible/'
+                        }
+                    }
+                ]
+            });
+        }
 
-    // HTML에 카카오톡 공유 버튼 추가
-    const kakaoButton = document.createElement('button');
-    kakaoButton.innerText = '카카오톡 공유';
-    kakaoButton.style.marginTop = '10px';
-    kakaoButton.style.padding = '10px 20px';
-    kakaoButton.style.background = '#FEE500';
-    kakaoButton.style.color = '#3D1D1E';
-    kakaoButton.style.border = 'none';
-    kakaoButton.style.borderRadius = '5px';
-    kakaoButton.style.cursor = 'pointer';
-    kakaoButton.addEventListener('click', shareToKakao);
-
-    // 버튼을 DOM에 추가
-    document.querySelector('.container').appendChild(kakaoButton);*/
-
+        // 카카오 초기화
+        Kakao.init('b7a745366d9aa78c3b469b5c5c83c025');
+    });
 </script>
+
 </body>
 </html>
