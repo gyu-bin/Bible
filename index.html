@@ -57,12 +57,22 @@
             margin-top: 10px;
         }
         .imageContainer {
-            margin: 0;
+            position: relative;
+            width: 300px; /* 원하는 너비 */
+            margin: 0 auto;
         }
-
         .imageContainer img {
-            max-width: 300px;
-            height: auto;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .imageContainer .bible {
+            z-index: 1; /* 아래쪽 이미지 */
+        }
+        .imageContainer .heart {
+            z-index: 2; /* 위쪽 이미지 */
+            top: 20px; /* 원하는 위치로 조정 */
         }
         .verse-box {
             padding: 40px 30px;
@@ -182,7 +192,8 @@
     <h1>2025 내게 주신 하나님의 말씀</h1>
     <h2>지인들과 함께 내게 주신 말씀을 나눠보세요</h2>
     <div class="imageContainer">
-        <img src="https://gyu-bin.github.io/Bible/image.png" alt="Bible with Heart">
+        <img src="https://gyu-bin.github.io/Bible/bible.png" alt="Bible" class="bible">
+        <img src="https://gyu-bin.github.io/Bible/heart.png" alt="Heart" class="heart">
     </div>
     <div class="verse-box" id="verseBox">
         <p class="verse" id="verse">"너희는 세상의 빛이라"</p>
@@ -383,34 +394,7 @@
         // 카카오 초기화
         Kakao.init('0288684a26b770807358f1c5e855b1c1');
         // 카카오톡 공유 기능
-        async function shareToKakao() {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-
-            // 캔버스 크기 설정
-            canvas.width = 600; // 원하는 이미지 크기
-            canvas.height = 400;
-
-            // 배경 색상 설정
-            ctx.fillStyle = '#FFC1C1'; // 배경 색상 (핑크톤)
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // 텍스트 스타일 설정
-            ctx.fillStyle = '#5E4B3F'; // 텍스트 색상
-            ctx.font = 'bold 24px Arial';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-
-            // 텍스트 추가
-            const verseText = document.getElementById('verse').innerText || '말씀을 뽑아주세요!';
-            const referenceText = document.getElementById('reference').innerText || '';
-
-            ctx.fillText('2025 내게 주신 하나님의 말씀', canvas.width / 2, 100); // 타이틀
-            ctx.fillText(verseText, canvas.width / 2, 200); // 말씀
-            ctx.fillText(referenceText, canvas.width / 2, 250); // 성구
-
-            // 이미지 URL로 변환
-            const imageData = canvas.toDataURL('image/png');
+        function shareToKakao() {
 
             Kakao.Link.sendDefault({
                 objectType: 'feed',
