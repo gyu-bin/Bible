@@ -376,39 +376,49 @@
                 // 카카오톡 공유 버튼 표시
                 kakaoButton.style.display = "block";
 
-                console.log("선택된 말씀40:", selectedVerse);
+                console.log("선택된 말씀:", selectedVerse);
             }, 5000); // 5초 딜레이
         });
 
         // 카카오 초기화
         Kakao.init('0288684a26b770807358f1c5e855b1c1');
         // 카카오톡 공유 기능
-        function shareToKakao() {
-            Kakao.Link.sendDefault({
-                objectType: 'feed',
-                content: {
-                    title: '2025 말씀뽑기',
-                    description: `제가 뽑은 말씀은 ${verse.innerText} (${reference.innerText}) 이에요!`,
-                    imageUrl: 'https://i.pinimg.com/736x/3b/0c/81/3b0c8108fe21fa66975715d83964bb34.jpg', // 업로드한 이미지 경로
-                    link: {
-                        webUrl: 'https://gyu-bin.github.io/Bible/',
-                        mobileWebUrl: 'https://gyu-bin.github.io/Bible/'
-                    }
-                },
-                buttons: [
-                    {
-                        title: '나도 말씀 뽑으러 가기',
+        async function shareToKakao() {
+            const verseBox = document.getElementById('verseBox');
+
+            try {
+                // HTML 요소를 캡처하여 Canvas로 변환
+                const canvas = await html2canvas(verseBox);
+
+                // 캡처된 Canvas를 이미지 데이터 URL로 변환 (base64)
+                const imageData = canvas.toDataURL('image/png');
+                Kakao.Link.sendDefault({
+                    objectType: 'feed',
+                    content: {
+                        title: '2025 말씀뽑기',
+                        description: `제가 뽑은 말씀은 ${verse.innerText} (${reference.innerText}) 이에요!`,
+                        imageBase64: imageData, // base64 이미지 데이터 전달
+                        // imageUrl: 'https://i.pinimg.com/736x/3b/0c/81/3b0c8108fe21fa66975715d83964bb34.jpg', // 업로드한 이미지 경로
                         link: {
                             webUrl: 'https://gyu-bin.github.io/Bible/',
                             mobileWebUrl: 'https://gyu-bin.github.io/Bible/'
                         }
-                    }
-                ]
-            });
+                    },
+                    buttons: [
+                        {
+                            title: '나도 말씀 뽑으러 가기',
+                            link: {
+                                webUrl: 'https://gyu-bin.github.io/Bible/',
+                                mobileWebUrl: 'https://gyu-bin.github.io/Bible/'
+                            }
+                        }
+                    ]
+                });
+            }catch (error) {
+                console.error('카카오톡 공유 중 오류 발생:', error);
+            }
         }
-
-
-    });
+        });
 </script>
 
 </body>
