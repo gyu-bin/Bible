@@ -24,57 +24,61 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
-        body {
+        html, body {
             margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* 스크롤 방지 */
             font-family: "Dongle", serif;
+            background: linear-gradient(to bottom, #fdf1f1, #ffe6e6);
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
-            background: linear-gradient(to bottom, #fdf1f1, #ffe6e6);
-            color: #333;
-            min-height: 100vh; /* 최소 높이 설정 */
             text-align: center;
-            box-sizing: border-box;
-            padding: 10px; /* 추가 패딩 */
-            overflow: hidden; /* 화면 넘침 방지 */
         }
 
         .container {
             width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            text-align: center;
+            height: 100%; /* 화면에 꽉 차도록 설정 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
+
+        /* 제목 스타일 */
         h1 {
-            font-size: 2.5rem;
+            font-size: 70px;
             font-weight: bold;
             color: #b63e3e;
             margin: 0;
         }
 
         h2 {
-            font-size: 1.2rem;
+            font-size: 30px;
             font-weight: 400;
             color: #b63e3e;
             background-color: #fff;
-            padding: 10px 20px;
+            padding: 5px 15px;
             border-radius: 20px;
             display: inline-block;
-            margin: 10px auto;
+            margin-top: 10px;
         }
+
+        /* 이미지 스타일 */
         .imageContainer {
             position: relative;
-            margin: 20px auto;
+            width: 80%; /* 이미지 크기 조정 */
+            max-width: 400px; /* 이미지 최대 크기 */
+            margin-top: 20px; /* 간격 조정 */
         }
 
         .imageContainer .bible {
-            z-index: 1;
-            width: 80%; /* 이미지 크기를 반응형으로 조정 */
-            max-width: 300px; /* 최대 크기 제한 */
+            width: 100%; /* 컨테이너에 맞게 크기 조정 */
         }
 
+        /* 말씀 박스 */
         .verse-box {
             display: none; /* 처음에는 화면에서 완전히 숨김 */
             padding: 40px 30px;
@@ -84,26 +88,27 @@
             border-radius: 15px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
             opacity: 0;
-            transition: opacity 0.5s ease, display 0.5s ease; /* 애니메이션 추가 */
+            transition: opacity 0.5s ease, display 0.5s ease;
         }
 
         .verse-box.show {
-            display: block; /* 보일 때 화면에 표시 */
+            display: block;
             opacity: 1;
         }
 
         .verse {
+            font-size: 2rem;
             font-weight: bold;
             color: #6e4f3a;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-            font-size: 1.5rem;
         }
 
         .reference {
-            margin-top: 10px;
-            font-size: 1rem;
+            margin-top: 15px;
+            font-size: 1.2rem;
             color: #8c6f54;
         }
+
         button {
             background: linear-gradient(to right, #ff5252, #ff7979);
             color: white;
@@ -157,47 +162,44 @@
             h1 {
                 font-size: 2rem;
             }
-
             h2 {
                 font-size: 1rem;
             }
-
             .verse {
-                font-size: 1.2rem;
+                font-size: 1.4rem;
             }
-
             .reference {
                 font-size: 0.9rem;
             }
-
             button {
-                padding: 8px 16px;
+                padding: 10px 20px;
                 font-size: 0.9rem;
             }
         }
 
         @media (max-width: 480px) {
             h1 {
-                font-size: 1.8rem;
+                font-size: 1.6rem;
             }
-
             h2 {
-                font-size: 0.8rem;
+                font-size: 0.9rem;
             }
-
+            .verse-box {
+                padding: 30px; /* 모바일 여백 추가 */
+                margin: 20px; /* 양쪽 여백 */
+            }
             .verse {
-                font-size: 1rem;
+                font-size: 1.2rem;
             }
-
             .reference {
                 font-size: 0.8rem;
             }
-
             button {
-                padding: 8px 12px;
+                padding: 8px 16px;
                 font-size: 0.8rem;
             }
         }
+
     </style>
 </head>
 <body>
@@ -318,7 +320,8 @@
                 download.style.fontSize = '1.5rem'
 
                 console.log("선택된 말씀:", selectedVerse);
-            }, 5000); // 5초 딜레이
+            }, 1000); // 5초 딜레이
+            // }, 5000); // 5초 딜레이
         });
 
         document.getElementById("downloadButton").addEventListener("click", () => {
