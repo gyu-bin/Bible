@@ -336,7 +336,7 @@
 
 
         verseButton.addEventListener("click", () => {
-            console.log("버튼 클릭 이벤트 실행");
+            console.log("버튼 클릭 이벤트 실행1");
 
             const imageContainer = document.querySelector('.imageContainer');
             if (imageContainer) {
@@ -384,41 +384,59 @@
         Kakao.init('0288684a26b770807358f1c5e855b1c1');
         // 카카오톡 공유 기능
         async function shareToKakao() {
-            const verseBox = document.getElementById('verseBox');
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
 
-            try {
-                // HTML 요소를 캡처하여 Canvas로 변환
-                const canvas = await html2canvas(verseBox);
+            // 캔버스 크기 설정
+            canvas.width = 600; // 원하는 이미지 크기
+            canvas.height = 400;
 
-                // 캡처된 Canvas를 이미지 데이터 URL로 변환 (base64)
-                const imageData = canvas.toDataURL('image/png');
-                Kakao.Link.sendDefault({
-                    objectType: 'feed',
-                    content: {
-                        title: '2025 말씀뽑기',
-                        description: `제가 뽑은 말씀은 ${verse.innerText} (${reference.innerText}) 이에요!`,
-                        imageBase64: imageData, // base64 이미지 데이터 전달
-                        // imageUrl: 'https://i.pinimg.com/736x/3b/0c/81/3b0c8108fe21fa66975715d83964bb34.jpg', // 업로드한 이미지 경로
+            // 배경 색상 설정
+            ctx.fillStyle = '#FFC1C1'; // 배경 색상 (핑크톤)
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // 텍스트 스타일 설정
+            ctx.fillStyle = '#5E4B3F'; // 텍스트 색상
+            ctx.font = 'bold 24px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            // 텍스트 추가
+            const verseText = document.getElementById('verse').innerText || '말씀을 뽑아주세요!';
+            const referenceText = document.getElementById('reference').innerText || '';
+
+            ctx.fillText('2025 내게 주신 하나님의 말씀', canvas.width / 2, 100); // 타이틀
+            ctx.fillText(verseText, canvas.width / 2, 200); // 말씀
+            ctx.fillText(referenceText, canvas.width / 2, 250); // 성구
+
+            // 이미지 URL로 변환
+            const imageData = canvas.toDataURL('image/png');
+
+            Kakao.Link.sendDefault({
+                objectType: 'feed',
+                content: {
+                    title: '2025 말씀뽑기',
+                    description: `제가 뽑은 말씀은 ${verse.innerText} (${reference.innerText}) 이에요!`,
+                    imageUrl: 'https://i.pinimg.com/736x/3b/0c/81/3b0c8108fe21fa66975715d83964bb34.jpg', // 업로드한 이미지 경로
+                    link: {
+                        webUrl: 'https://gyu-bin.github.io/Bible/',
+                        mobileWebUrl: 'https://gyu-bin.github.io/Bible/'
+                    }
+                },
+                buttons: [
+                    {
+                        title: '나도 말씀 뽑으러 가기',
                         link: {
                             webUrl: 'https://gyu-bin.github.io/Bible/',
                             mobileWebUrl: 'https://gyu-bin.github.io/Bible/'
                         }
-                    },
-                    buttons: [
-                        {
-                            title: '나도 말씀 뽑으러 가기',
-                            link: {
-                                webUrl: 'https://gyu-bin.github.io/Bible/',
-                                mobileWebUrl: 'https://gyu-bin.github.io/Bible/'
-                            }
-                        }
-                    ]
-                });
-            }catch (error) {
-                console.error('카카오톡 공유 중 오류 발생:', error);
-            }
+                    }
+                ]
+            });
         }
-        });
+
+
+    });
 </script>
 
 </body>
