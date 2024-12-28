@@ -49,6 +49,7 @@
 
         /* 제목 스타일 */
         h1 {
+            margin-top: -25px;
             font-size: 5rem; /* 제목 크기를 키워 강조 */
             font-weight: 800; /* 조금 더 두껍게 */
             margin-bottom: -10px; /* 제목과 부제목 간격 조정 */
@@ -241,6 +242,8 @@
             align-items: center;
             margin-top: 10px;
             gap: 5px;
+            padding: 0 20px; /* 좌우 여백 추가 */
+            box-sizing: border-box; /* padding 포함 계산 */
         }
         /*.loadingText.active {
             display: flex; !important;
@@ -305,7 +308,7 @@
             }
             button {
                 padding: 18px 80px; /* 버튼 여백 조정 */
-                font-size: 20px; /* 글씨 크기 유지 */
+                font-size: 16px; /* 글씨 크기 유지 */
             }
         }
 
@@ -415,13 +418,14 @@
 
             // 버튼 텍스트 변경
             verseButton.innerText = "다시 뽑기";
-            verseButton.style.fontFamily =  "Dongle";
-            verseButton.style.fontSize = '1.5rem'
+            verseButton.style.fontSize = '16px'
+            verseButton.style.marginTop = '15px'
 
             // 로딩 텍스트 및 게이지 바 활성화
             // loadingText.style.display = "block";
             progressContainer.style.display = "block";
             progressBar.style.width = "0%";
+            shareMent.style.display = 'none'
 
             // 게이지 바 애니메이션 시작
             setTimeout(() => {
@@ -446,7 +450,7 @@
                 progressContainer.style.display = "none";
                 progressBar.style.width = "0%";
                 verseBox.style.display = 'block'
-                shareMent.style.display = 'none'
+
 
                 // 카카오톡 공유 버튼 표시
                 kakaoButton.style.display = "block";
