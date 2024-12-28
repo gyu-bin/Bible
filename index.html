@@ -136,18 +136,18 @@
             border: none;
             border-radius: 40px;
             cursor: pointer;
-            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+            /*box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);*/
             transition: all 0.3s ease;
         }
 
         button:hover {
             transform: translateY(-3px);
-            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+            /*box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);*/
         }
 
         button:active {
             transform: translateY(0);
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            /*box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);*/
         }
 
         .progress-container {
@@ -250,6 +250,23 @@
             color: #8c6f54;
             animation: wave 1.2s infinite ease-in-out;
             transform-origin: center; /* 애니메이션 기준 설정 */
+        }
+
+        #kakaoButton {
+            margin: 20px auto;
+            display: none;
+            padding: 10px; /* 여백 추가 */
+            background: transparent; /* 배경 제거 */
+            border: none; /* 버튼 테두리 제거 */
+            cursor: pointer; /* 클릭 커서 */
+        }
+
+        #kakaoIcon {
+            width: 40px; /* 아이콘 크기 */
+            height: 40px;
+            display: block; /* 중앙 정렬 */
+            margin: auto;
+            box-shadow: none; /* 박스 쉐도우 제거 */
         }
 
         /*#downloadButton{
@@ -362,6 +379,11 @@
     <h3 id="shareMent">사랑하는 사람들과 함께 <br> 내게 주신 말씀을 나눠보세요</h3>
     <button id="verseButton">말씀 뽑기</button>
 
+    <button id="kakaoButton">
+        <img src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png" alt="카카오톡 공유" id="kakaoIcon">
+    </button>
+
+
 <!--    <button id="downloadButton">이미지 다운로드(구현중)</button>-->
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -380,32 +402,7 @@
         const loadingText = document.getElementById("loadingText");
         // const download = document.getElementById('downloadButton')
         const shareMent = document.getElementById('shareMent')
-
-        // 카카오톡 공유 버튼 생성
-        const kakaoButton = document.createElement('button');
-        const kakaoIcon = document.createElement('img');
-
-        kakaoIcon.src = 'https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png'; // 카카오톡 아이콘 URL
-        kakaoIcon.alt = '카카오톡 공유';
-        kakaoIcon.style.width = '40px'; // 아이콘 크기 조정
-        kakaoIcon.style.height = '40px';
-        kakaoIcon.style.display = 'block'; // 중앙 정렬
-        kakaoIcon.style.margin = 'auto';
-
-        kakaoButton.style.margin = '20px auto';
-        kakaoButton.style.display = 'block';
-        kakaoButton.style.padding = '10px'; // 여백 추가
-        kakaoButton.style.background = 'transparent'; // 배경 제거
-        kakaoButton.style.border = 'none'; // 버튼 테두리 제거
-        kakaoButton.style.cursor = 'pointer';
-        kakaoButton.style.display = 'none'; // 처음에는 숨김
-        kakaoButton.id = 'shareButton';
-
-        kakaoButton.appendChild(kakaoIcon);
-        // 클릭 이벤트 추가
-        kakaoButton.addEventListener('click', shareToKakao);
-        // 카카오톡 공유 버튼을 DOM에 추가 (디자인을 위해 아래로 배치)
-        document.querySelector('.container').appendChild(kakaoButton);
+        const kakaoButton = document.getElementById('kakaoButton')
 
         if (!verseButton || !verseBox || !verseText || !referenceText || !progressBar || !loadingText || !progressContainer) {
             console.error("필수 요소를 찾을 수 없습니다!");
@@ -510,8 +507,7 @@
         // 카카오 초기화
         Kakao.init('0288684a26b770807358f1c5e855b1c1');
         // 카카오톡 공유 기능
-        function shareToKakao() {
-            document.getElementById("shareButton").addEventListener("click", () => {
+            document.getElementById("kakaoButton").addEventListener("click", () => {
                 Kakao.Link.sendCustom({
                     templateId: 115764, // 생성한 템플릿 ID
                     templateArgs: {
@@ -521,7 +517,6 @@
                     }
                 });
             });
-        }
     });
 </script>
 </body>
