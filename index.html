@@ -36,6 +36,8 @@
             justify-content: center;
             align-items: center;
             text-align: center;
+            box-sizing: border-box; /* 패딩 포함 크기 계산 */
+            overflow: hidden; /* 스크롤 방지 */
         }
 
         .container {
@@ -45,6 +47,9 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            margin-top: -25px;
+            box-sizing: border-box;
+            padding: 20px; /* 내부 여백 */
         }
 
         /* 제목 스타일 */
@@ -229,13 +234,6 @@
             animation-delay: 1.1s;
         }
 
- /*       .loadingText {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 10px;
-        }*/
-
         .loadingText {
             display: none;
             justify-content: center;
@@ -284,6 +282,9 @@
                 padding: 18px 80px; /* 버튼 여백 조정 */
                 font-size: 20px; /* 버튼 글씨 크기 증가 */
             }
+            .loadingText {
+                padding: 0 15px; /* 중간 화면 좌우 여백 */
+            }
         }
 
         @media (max-width: 480px) {
@@ -309,6 +310,9 @@
             button {
                 padding: 18px 80px; /* 버튼 여백 조정 */
                 font-size: 16px; /* 글씨 크기 유지 */
+            }
+            .loadingText {
+                padding: 0 10px; /* 작은 화면 좌우 여백 */
             }
         }
 
@@ -422,10 +426,10 @@
             verseButton.style.marginTop = '15px'
 
             // 로딩 텍스트 및 게이지 바 활성화
-            // loadingText.style.display = "block";
             progressContainer.style.display = "block";
             progressBar.style.width = "0%";
             shareMent.style.display = 'none'
+            verseBox.style.display = 'none'
 
             // 게이지 바 애니메이션 시작
             setTimeout(() => {
@@ -444,13 +448,9 @@
 
                 // 로딩 텍스트 숨김 및 말씀 표시
                 loadingText.style.display = "none";
-                setTimeout(() => {
-                    loadingText.style.display = "none"; // 뽑기 완료 시 숨김
-                }, 5000); // 5초 후 로딩 문구 숨김
                 progressContainer.style.display = "none";
                 progressBar.style.width = "0%";
                 verseBox.style.display = 'block'
-
 
                 // 카카오톡 공유 버튼 표시
                 kakaoButton.style.display = "block";
