@@ -7,7 +7,8 @@
 
     <title>2025 나의 말씀뽑기</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Dongle:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+
     <!-- Open Graph Meta Tags -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="2025 내게 주신 하나님의 말씀">
@@ -30,7 +31,7 @@
             width: 100%;
             height: 100%;
             overflow: hidden; /* 스크롤 방지 */
-            font-family: "Dongle", serif;
+            font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
             background: linear-gradient(to bottom, #fdf1f1, #ffe6e6);
             display: flex;
             justify-content: center;
@@ -49,15 +50,15 @@
 
         /* 제목 스타일 */
         h1 {
-            font-size: 70px;
-            font-weight: bold;
+            font-size: 3rem; /* 큰 제목 */
+            font-weight: 700; /* 굵은 제목 */
             color: #b63e3e;
             margin: 0;
         }
 
         h2 {
-            font-size: 30px;
-            font-weight: 400;
+            font-size: 1.5rem; /* 부제목 */
+            font-weight: 400; /* 보통 굵기 */
             color: #b63e3e;
             background-color: #fff;
             padding: 5px 15px;
@@ -79,16 +80,11 @@
         }
 
         /* 말씀 박스 */
-        .verse-box {
-            display: none; /* 처음에는 화면에서 완전히 숨김 */
-            padding: 40px 30px;
-            max-width: 600px;
-            margin: 20px auto;
-            background: #fff;
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            opacity: 0;
-            transition: opacity 0.5s ease, display 0.5s ease;
+        .verse {
+            font-size: 1.8rem; /* 말씀 크기 */
+            font-weight: 600; /* 굵게 강조 */
+            color: #6e4f3a;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
         }
 
         .verse-box.show {
@@ -105,15 +101,16 @@
 
         .reference {
             margin-top: 15px;
-            font-size: 1.2rem;
+            font-size: 1rem; /* 작은 텍스트 */
+            font-weight: 400; /* 보통 굵기 */
             color: #8c6f54;
         }
 
         button {
             background: linear-gradient(to right, #ff5252, #ff7979);
             color: white;
-            font-size: 30px; !important;
-            font-weight: bold;
+            font-size: 1.5rem;
+            font-weight: 600;
             padding: 15px 30px;
             border: none;
             border-radius: 25px;
@@ -131,6 +128,7 @@
             transform: translateY(0);
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
         }
+
         .progress-container {
             margin-top: 20px;
             position: relative;
@@ -245,33 +243,33 @@
         /* 반응형 스타일 */
         @media (max-width: 768px) {
             h1 {
-                font-size: 2rem;
+                font-size: 2.5rem;
             }
             h2 {
-                font-size: 1rem;
+                font-size: 1.2rem;
             }
             .verse {
-                font-size: 1.4rem;
+                font-size: 1.5rem;
             }
             .reference {
                 font-size: 0.9rem;
             }
             button {
                 padding: 10px 20px;
-                font-size: 0.9rem;
+                font-size: 1.2rem;
             }
         }
 
         @media (max-width: 480px) {
             h1 {
-                font-size: 1.6rem;
+                font-size: 2rem;
             }
             h2 {
-                font-size: 0.9rem;
+                font-size: 1rem;
             }
             .verse-box {
-                padding: 30px; /* 모바일 여백 추가 */
-                margin: 20px; /* 양쪽 여백 */
+                padding: 30px;
+                margin: 20px;
             }
             .verse {
                 font-size: 1.2rem;
@@ -281,7 +279,7 @@
             }
             button {
                 padding: 8px 16px;
-                font-size: 0.8rem;
+                font-size: 1rem;
             }
         }
     </style>
