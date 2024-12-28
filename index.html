@@ -58,9 +58,9 @@
             font-weight: 800; /* 조금 더 두껍게 */
             margin-bottom: -10px; /* 제목과 부제목 간격 조정 */
             font-family: "Ultra", serif;
-
+            /*            background: linear-gradient(to right, #ff5252, #ff7979);*/
             /* 텍스트 그라데이션 */
-            background: linear-gradient(to right, #F57272, #AB3240); /* 그라데이션 색상 */
+            background: linear-gradient(to right, #ff5252, #ff7979); /* 그라데이션 색상 */
             -webkit-background-clip: text; /* 텍스트에 배경 클리핑 */
             -webkit-text-fill-color: transparent; /* 텍스트 채우기 투명 */
             background-clip: text; /* 텍스트에 배경 클리핑 */
@@ -127,8 +127,8 @@
         }
 
         button {
-            background: linear-gradient(to right, #F57272, #AB3240); /* 더 부드러운 그라디언트 */
-            /*background: linear-gradient(to right, #ff5252, #ff7979);*/
+            /*background: linear-gradient(to right, #F57272, #AB3240); !* 더 부드러운 그라디언트 *!*/
+            background: linear-gradient(to right, #ff5252, #ff7979);
             color: white;
             font-size: 20px; /* 버튼 텍스트 크기 감소 */
             font-weight: 600;
@@ -252,6 +252,12 @@
             transform-origin: center; /* 애니메이션 기준 설정 */
         }
 
+        #btnContainer{
+            display: flex; /* 가로 정렬 */
+            justify-content: center; /* 중앙 정렬 */
+            gap: 15px; /* 버튼 사이 간격 */
+            margin-top: 20px; /* 버튼 위아래 간격 */
+        }
         #kakaoButton {
             margin: 20px auto;
             display: none;
@@ -269,9 +275,27 @@
             box-shadow: none; /* 박스 쉐도우 제거 */
         }
 
-        /*#downloadButton{
+        #downloadButton{
             display: none;
-        }*/
+            font-size: 16px;
+            /*background: linear-gradient(to right, #F57272, #ff7979); !* 뽑기 버튼과 동일한 그라데이션 *!
+            color: white;
+            font-size: 20px; !* 버튼 텍스트 크기 *!
+            font-weight: 600;
+            padding: 18px 80px; !* 버튼 크기 *!
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.3s ease;*/
+        }
+        #downloadButton:hover {
+            transform: translateY(-3px);
+        }
+
+        #downloadButton:active {
+            transform: translateY(0);
+        }
+
         /* 반응형 스타일 */
         @media (max-width: 768px) {
             h1 {
@@ -379,12 +403,13 @@
     <h3 id="shareMent">사랑하는 사람들과 함께 <br> 내게 주신 말씀을 나눠보세요</h3>
     <button id="verseButton">말씀 뽑기</button>
 
-    <button id="kakaoButton">
-        <img src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png" alt="카카오톡 공유" id="kakaoIcon">
-    </button>
+    <div id="btnContainer">
+        <button id="kakaoButton">
+            <img src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png" alt="카카오톡 공유" id="kakaoIcon">
+        </button>
+        <button id="downloadButton">이미지 다운로드</button>
+    </div>
 
-
-<!--    <button id="downloadButton">이미지 다운로드(구현중)</button>-->
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script type="module">
@@ -400,7 +425,7 @@
         const progressBar = document.getElementById("progressBar");
         const progressContainer = document.getElementById("progressContainer");
         const loadingText = document.getElementById("loadingText");
-        // const download = document.getElementById('downloadButton')
+        const download = document.getElementById('downloadButton')
         const shareMent = document.getElementById('shareMent')
         const kakaoButton = document.getElementById('kakaoButton')
 
@@ -460,48 +485,88 @@
 
                 // 카카오톡 공유 버튼 표시
                 kakaoButton.style.display = "block";
-               /* download.style.display = "block"
+                download.style.display = "block"
                 download.style.margin = "20px auto"; // 다운로드 버튼 가운데 정렬
                 download.style.textAlign = "center"; // 텍스트 정렬 보장
                 download.style.fontFamily =  "Dongle";
-                download.style.fontSize = '1.5rem'*/
+                download.style.fontSize = '1.5rem'
 
                 console.log("선택된 말씀:", selectedVerse);
             }, 5000); // 5초 딜레이
         });
 
         //사진 다운로드
-       /* document.getElementById("downloadButton").addEventListener("click", () => {
-            const resultContainer = document.getElementById("verseBox");
-            resultContainer.classList.add("show"); // show 클래스 추가로 표시
-            if (resultContainer) {
-                html2canvas(resultContainer).then(canvas => {
-                    canvas.toBlob(blob => {
-                        if (blob) {
-                            const url = URL.createObjectURL(blob);
-                            const link = document.createElement("a");
-                            link.href = url;
-                            link.download = "bible-result.png";
+        document.getElementById("downloadButton").addEventListener("click", () => {
+            const container = document.querySelector(".container");
+            const verseBox = document.getElementById("verseBox");
+            const h1 = document.querySelector("h1");
+            const h2 = document.querySelector("h2");
 
-                            if (typeof link.click === "function") {
-                                link.click();
-                            } else {
-                                // iOS Safari 대안
-                                window.open(url, "_blank");
-                            }
+            // UI 요소 숨김 처리
+            document.getElementById("verseButton").style.display = "none";
+            document.getElementById("downloadButton").style.display = "none";
+            const shareButton = document.getElementById("kakaoButton");
+            if (shareButton) shareButton.style.display = "none";
 
-                            URL.revokeObjectURL(url);
-                        } else {
-                            console.error("Blob 변환 중 오류 발생.");
-                        }
+            // 캡처 설정
+            html2canvas(container, {
+                useCORS: true,
+                backgroundColor: "#fdf1f1", // 배경 색상
+                onclone: (clonedDoc) => {
+                    const clonedH1 = clonedDoc.querySelector("h1");
+                    const clonedH2 = clonedDoc.querySelector("h2");
+                    const clonedVerseBox = clonedDoc.getElementById("verseBox");
+
+                    // 제목 (h1) 스타일 조정
+                    clonedH1.style.fontSize = "4.5rem";
+                    clonedH1.style.textAlign = "center";
+                    clonedH1.style.marginBottom = "10px";
+                    clonedH1.style.fontWeight = "bold";
+
+                    // 배경색 없애기 및 텍스트 색상 설정
+                    clonedH1.style.background = "none"; // 배경 제거
+                    clonedH1.style.webkitBackgroundClip = "none"; // 배경 클립 제거
+                    clonedH1.style.webkitTextFillColor = "inherit"; // 텍스트 채우기 원래 색상
+                    clonedH1.style.color = "#b63e3e"; // 기존 글자 색상으로 설정
+
+                    // 부제목 (h2) 스타일 조정
+                    clonedH2.style.fontSize = "1.5rem";
+                    clonedH2.style.textAlign = "center";
+                    clonedH2.style.marginBottom = "15px";
+
+                    // verse-box 스타일 조정
+                    clonedVerseBox.style.padding = "30px";
+                    clonedVerseBox.style.margin = "0 auto";
+                    clonedVerseBox.style.boxShadow = "none"; // 캡처 시 그림자 제거
+                    // 말씀 박스 (verse-box) 스타일 조정
+                    clonedVerseBox.style.padding = "30px";
+                    clonedVerseBox.style.margin = "0 auto";
+                    clonedVerseBox.style.border = "1px solid #F5C2C2"; // 부드러운 테두리
+                    clonedVerseBox.style.borderRadius = "15px";
+                    clonedVerseBox.style.boxShadow = "none"; // 캡처 시 그림자 제거
+                    clonedVerseBox.style.background = "white"; // 배경 흰색으로 유지
+                },
+            })
+                .then((canvas) => {
+                    // 캡처된 이미지를 Blob으로 변환 후 다운로드
+                    canvas.toBlob((blob) => {
+                        const link = document.createElement("a");
+                        link.href = URL.createObjectURL(blob);
+                        link.download = "bible-verse.png";
+                        link.click();
+                        URL.revokeObjectURL(link.href);
+
+                        // UI 요소 복원
+                        document.getElementById("verseButton").style.display = "block";
+                        document.getElementById("downloadButton").style.display = "block";
+                        if (shareButton) shareButton.style.display = "block";
                     });
-                }).catch(err => {
-                    console.error("이미지 저장 중 오류 발생:", err);
+                })
+                .catch((err) => {
+                    console.error("다운로드 중 오류 발생:", err);
                 });
-            } else {
-                console.error("요소 #resultContainer를 찾을 수 없습니다.");
-            }
-        });*/
+        });
+
 
 
         // 카카오 초기화
