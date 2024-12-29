@@ -407,9 +407,6 @@
         <button id="downloadButton">스크린샷</button>
     </div>
 
-    <div id="infoMessage" style="display: none; position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); font-size: 0.9rem; color: #888; text-align: center; background: rgba(255, 255, 255, 0.9); padding: 5px 10px; border-radius: 5px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); z-index: 1000;">
-        다운로드는 작동하지 않습니다. '스크린샷 - 보기(safari)'를 누르면 적절한 화면이 나옵니다.
-    </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script type="module">
@@ -428,7 +425,6 @@
         const download = document.getElementById('downloadButton')
         const shareMent = document.getElementById('shareMent')
         const kakaoButton = document.getElementById('kakaoButton')
-        const infoMessage = document.getElementById('infoMessage')
 
         if (!verseButton || !verseBox || !verseText || !referenceText || !progressBar || !loadingText || !progressContainer) {
             console.error("필수 요소를 찾을 수 없습니다!");
@@ -498,7 +494,6 @@
                 download.style.fontSize = '18px'
                 download.style.padding = "12px 16px"; // 패딩 상하: 12px, 좌우: 60px
                 console.log("선택된 말씀:", selectedVerse);
-                infoMessage.style.display='block'
             }, 5000); // 5초 딜레이
         });
 
@@ -569,9 +564,7 @@
                         if (shareButton) shareButton.style.display = "block";
                     });
 
-                })
-
-                .catch((err) => {
+                }).catch((err) => {
                     console.error("다운로드 중 오류 발생:", err);
                 });
         });
