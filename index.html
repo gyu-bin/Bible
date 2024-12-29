@@ -539,25 +539,29 @@
                     clonedVerseBox.style.boxShadow = "none"; // 캡처 시 그림자 제거
                     clonedVerseBox.style.background = "white"; // 배경 흰색으로 유지
                 },
-            })
-                .then((canvas) => {
-                    // 캡처된 이미지를 Blob으로 변환 후 다운로드
-                    canvas.toBlob((blob) => {
-                        const link = document.createElement("a");
-                        link.href = URL.createObjectURL(blob);
-                        link.download = "bible-verse.png";
-                        link.click();
-                        URL.revokeObjectURL(link.href);
+            }).then((canvas) => {
+                const dataURL = canvas.toDataURL("image/png"); // Data URL 생성
+                const link = document.createElement("a");
+                link.href = dataURL;
+                link.download = "bible-verse.png";
+                link.click();
 
-                        // UI 요소 복원
-                        document.getElementById("verseButton").style.display = "block";
-                        document.getElementById("downloadButton").style.display = "block";
-                        if (shareButton) shareButton.style.display = "block";
-                    });
-                })
-                .catch((err) => {
-                    console.error("다운로드 중 오류 발생:", err);
-                });
+                // UI 요소 복원
+                document.getElementById("verseButton").style.display = "block";
+                document.getElementById("downloadButton").style.display = "block";
+                if (shareButton) shareButton.style.display = "block";
+            }).catch((err) => {
+                console.error("다운로드 중 오류 발생:", err);
+            });
+            canvas.toBlob((blob) => {
+                const newTab = window.open("about:blank", "_blank");
+                if (newTab) {
+                    const blobURL = URL.createObjectURL(blob);
+                    newTab.location.href = blobURL;
+                } else {
+                    console.error("새 탭 열기 실패!");
+                }
+            });
         });
 
 
