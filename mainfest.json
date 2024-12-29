@@ -1,0 +1,20 @@
+{
+  "name": "2025 나의 말씀뽑기",
+  "short_name": "말씀뽑기",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fdf1f1",
+  "theme_color": "#fdf1f1",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
