@@ -24,8 +24,6 @@
     <meta name="twitter:image" content="https://gyu-bin.github.io/Bible/love.png">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-    <link rel="manifest" href="./mainfest.json">
-    <meta name="theme-color" content="#ffffff">
     <style>
         html, body {
             margin: 0;
@@ -153,6 +151,7 @@
         }
 
         .progress-container {
+            margin-top: 20px;
             position: relative;
             width: 80%;
             height: 10px;
@@ -496,6 +495,9 @@
         //사진 다운로드
         document.getElementById("downloadButton").addEventListener("click", () => {
             const container = document.querySelector(".container");
+            const verseBox = document.getElementById("verseBox");
+            const h1 = document.querySelector("h1");
+            const h2 = document.querySelector("h2");
 
             // UI 요소 숨김 처리
             document.getElementById("verseButton").style.display = "none";
@@ -541,29 +543,25 @@
                     clonedVerseBox.style.boxShadow = "none"; // 캡처 시 그림자 제거
                     clonedVerseBox.style.background = "white"; // 배경 흰색으로 유지
                 },
-            }).then((canvas) => {
-                const dataURL = canvas.toDataURL("image/png"); // Data URL 생성
-                const link = document.createElement("a");
-                link.href = dataURL;
-                link.download = "bible-verse.png";
-                link.click();
+            })
+                .then((canvas) => {
+                    // 캡처된 이미지를 Blob으로 변환 후 다운로드
+                    canvas.toBlob((blob) => {
+                        const link = document.createElement("a");
+                        link.href = URL.createObjectURL(blob);
+                        link.download = "bible-verse.png";
+                        link.click();
+                        URL.revokeObjectURL(link.href);
 
-                // UI 요소 복원
-                document.getElementById("verseButton").style.display = "block";
-                document.getElementById("downloadButton").style.display = "block";
-                if (shareButton) shareButton.style.display = "block";
-            }).catch((err) => {
-                console.error("다운로드 중 오류 발생:", err);
-            });
-            canvas.toBlob((blob) => {
-                const newTab = window.open("about:blank", "_blank");
-                if (newTab) {
-                    const blobURL = URL.createObjectURL(blob);
-                    newTab.location.href = blobURL;
-                } else {
-                    console.error("새 탭 열기 실패!");
-                }
-            });
+                        // UI 요소 복원
+                        document.getElementById("verseButton").style.display = "block";
+                        document.getElementById("downloadButton").style.display = "block";
+                        if (shareButton) shareButton.style.display = "block";
+                    });
+                })
+                .catch((err) => {
+                    console.error("다운로드 중 오류 발생:", err);
+                });
         });
 
 
@@ -571,16 +569,16 @@
         // 카카오 초기화
         Kakao.init('0288684a26b770807358f1c5e855b1c1');
         // 카카오톡 공유 기능
-            document.getElementById("kakaoButton").addEventListener("click", () => {
-                Kakao.Link.sendCustom({
-                    templateId: 115764, // 생성한 템플릿 ID
-                    templateArgs: {
-                        // 동적으로 전달할 데이터 (템플릿 설정에서 정의한 값들)
-                        title: '2025 내게 주신 하나님의 말씀', // 템플릿에 전달할 title
-                        description: `제가 뽑은 말씀은 ${verse.innerText} (${reference.innerText}) 이에요!`,
-                    }
-                });
+        document.getElementById("kakaoButton").addEventListener("click", () => {
+            Kakao.Link.sendCustom({
+                templateId: 115764, // 생성한 템플릿 ID
+                templateArgs: {
+                    // 동적으로 전달할 데이터 (템플릿 설정에서 정의한 값들)
+                    title: '2025 내게 주신 하나님의 말씀', // 템플릿에 전달할 title
+                    description: `제가 뽑은 말씀은 ${verse.innerText} (${reference.innerText}) 이에요!`,
+                }
             });
+        });
     });
 </script>
 </body>
