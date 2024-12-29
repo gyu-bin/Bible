@@ -255,7 +255,7 @@
         #btnContainer{
             display: flex; /* 가로 정렬 */
             justify-content: center; /* 중앙 정렬 */
-            gap: 15px; /* 버튼 사이 간격 */
+            /*gap: 15px; !* 버튼 사이 간격 *!*/
             margin-top: 20px; /* 버튼 위아래 간격 */
         }
         #kakaoButton {
@@ -277,7 +277,7 @@
 
         #downloadButton{
             display: none;
-            font-size: 16px;
+            font-size: 10px;
             /*background: linear-gradient(to right, #F57272, #ff7979); !* 뽑기 버튼과 동일한 그라데이션 *!
             color: white;
             font-size: 20px; !* 버튼 텍스트 크기 *!
@@ -486,11 +486,10 @@
                 // 카카오톡 공유 버튼 표시
                 kakaoButton.style.display = "block";
                 download.style.display = "block"
-                download.style.margin = "20px auto"; // 다운로드 버튼 가운데 정렬
+                download.style.margin = "23px 0"; // 다운로드 버튼 가운데 정렬
                 download.style.textAlign = "center"; // 텍스트 정렬 보장
-                download.style.fontFamily =  "Dongle";
-                download.style.fontSize = '1.5rem'
-
+                download.style.fontSize = '18px'
+                download.style.padding = "12px 16px"; // 패딩 상하: 12px, 좌우: 60px
                 console.log("선택된 말씀:", selectedVerse);
             }, 5000); // 5초 딜레이
         });
