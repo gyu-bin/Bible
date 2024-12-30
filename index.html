@@ -371,6 +371,17 @@
                 margin: 10px 0;
             }
         }
+        /*스크린샷 */
+        #screenshotImage {
+            display: block;
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto 0;
+            position: relative;
+            top: 0;
+            height: auto;
+        }
+
     /*뒤로가기*/
         #backButton {
             display: none;
@@ -626,7 +637,7 @@
             // 캡처 설정
             html2canvas(container, {
                 useCORS: true,
-                backgroundColor: "#fdf1f1", // 배경 색상
+                backgroundColor: "linear-gradient(to bottom, #fdf1f1, #ffe6e6);",
                 onclone: (clonedDoc) => {
                     const clonedH1 = clonedDoc.querySelector("h1");
                     const clonedH2 = clonedDoc.querySelector("h2");
@@ -671,17 +682,12 @@
                     // 캡처된 이미지를 DOM에 추가
                     const img = document.createElement("img");
                     img.src = canvas.toDataURL("image/png");
-                    img.id = "screenshotImage"; // ID 추가
-                    img.style.width = "100%"; // 이미지가 화면에 꽉 차도록 설정
-                    img.style.height = '100vh'
-                    img.style.maxWidth = "600px"; // 최대 크기 제한
-                    img.style.margin = "20px auto"; // 가운데 정렬
-                    img.style.display = "block"; // 이미지 블록 표시
+                    img.id = "screenshotImage";
+                    img.className = "screenshotImage"; // 추가된 클래스
                     document.body.appendChild(img);
 
                     // 뒤로 가기 버튼 표시
                     backButton.style.display = "block";
-                    console.log('backButton')
                 })
                 .catch((err) => {
                     console.error("스크린샷 생성 중 오류 발생:", err);
