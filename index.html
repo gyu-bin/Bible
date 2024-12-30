@@ -327,6 +327,10 @@
             .loading-letter {
                 font-size: 1.2rem; /* 글자 크기 더 축소 */
             }
+            .card_box {
+                height: 100px; /* 모바일 환경에 맞춘 카드 높이 */
+                margin: 15px 0;
+            }
         }
 
         @media (max-width: 480px) {
@@ -362,6 +366,76 @@
             .loading-letter {
                 font-size: 1rem; /* 글자 크기 더 축소 */
             }
+            .card_box {
+                height: 80px;
+                margin: 10px 0;
+            }
+        }
+    /*뒤로가기*/
+        #backButton {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+        }
+
+        #backToResultsButton {
+            background: linear-gradient(to right, #ff5252, #ff7979);
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        /*  */
+        .card_box {
+            display: none;
+            justify-content: center; /* 카드들을 중앙 정렬 */
+            align-items: center; /* 수직 가운데 정렬 */
+            width: 100%;
+            height: 120px; /* 카드 높이 */
+            margin: 20px 0; /* 위아래 간격 */
+            pointer-events: none; /* 카드 클릭 방지 */
+        }
+
+        .card {
+            position: absolute;
+            width: 60px;
+            height: 90px;
+            background: linear-gradient(to bottom right, #f8b195, #f67280);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transform-origin: center;
+            backface-visibility: hidden;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+
+        .card:nth-child(odd) {
+            background: linear-gradient(to bottom right, #c06c84, #6c5b7b);
+        }
+
+        @keyframes shuffle {
+            0% {
+                transform: translateX(0) rotate(0deg);
+            }
+            25% {
+                transform: translateX(-30px) rotate(-10deg);
+            }
+            50% {
+                transform: translateX(30px) rotate(10deg);
+            }
+            75% {
+                transform: translateX(-15px) rotate(-5deg);
+            }
+            100% {
+                transform: translateX(0) rotate(0deg);
+            }
         }
 
     </style>
@@ -377,6 +451,7 @@
         <p class="verse" id="verse">"너희는 세상의 빛이라"</p>
         <p class="reference" id="reference">마태복음 5:14</p>
     </div>
+    <div id="cardBox" class="card_box"></div>
     <div class="progress-container" id="progressContainer">
         <div class="progress-bar" id="progressBar"></div>
     </div>
@@ -406,7 +481,9 @@
         </button>
         <button id="downloadButton">스크린샷</button>
     </div>
-
+</div>
+<div id="backButton">
+    <button id="backToResultsButton">뒤로 가기</button>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script type="module">
@@ -425,11 +502,43 @@
         const download = document.getElementById('downloadButton')
         const shareMent = document.getElementById('shareMent')
         const kakaoButton = document.getElementById('kakaoButton')
+        //
+        const cardBox = document.getElementById("cardBox");
+        const backButton = document.getElementById("backButton");
 
         if (!verseButton || !verseBox || !verseText || !referenceText || !progressBar || !loadingText || !progressContainer) {
             console.error("필수 요소를 찾을 수 없습니다!");
             return;
         }
+
+        // 카드 생성 함수
+        const generateCards = (count) => {
+            cardBox.innerHTML = ""; // 기존 카드 제거
+            for (let i = 0; i < count; i++) {
+                const card = document.createElement("div");
+                card.className = "card";
+                card.style.zIndex = count - i; // 카드 z-index 설정
+                cardBox.appendChild(card);
+            }
+        };
+
+        // 셔플 애니메이션
+        const shuffleCards = () => {
+            const cards = document.querySelectorAll(".card");
+            cards.forEach((card, index) => {
+                card.style.animation = `shuffle 0.5s ${(index * 0.1).toFixed(2)}s ease infinite alternate`;
+            });
+
+            // 5초 후 카드 제거
+            setTimeout(() => {
+                cards.forEach((card) => {
+                    card.style.opacity = "0"; // 카드 투명화
+                });
+                setTimeout(() => {
+                    cardBox.innerHTML = ""; // 카드 DOM에서 제거
+                }, 500);
+            }, 5000);
+        };
 
         document.getElementById("verseButton").addEventListener("click", () => {
 
@@ -458,12 +567,16 @@
             progressBar.style.width = "0%";
             shareMent.style.display = 'none'
             verseBox.style.display = 'none'
-
+            cardBox.style.display = 'flex'
             // 게이지 바 애니메이션 시작
             setTimeout(() => {
                 progressBar.style.transition = "width 5s linear";
                 progressBar.style.width = "100%";
             }, 10);
+
+            // 카드 생성 및 셔플
+            generateCards(10); // 카드 10장 생성
+            shuffleCards(); // 셔플 애니메이션 실행
 
             // 5초 후 랜덤 말씀 표시 및 공유 버튼 활성화
             setTimeout(() => {
@@ -485,7 +598,7 @@
                 progressContainer.style.display = "none";
                 progressBar.style.width = "0%";
                 verseBox.style.display = 'block'
-
+                cardBox.style.display = 'none'
                 // 카카오톡 공유 버튼 표시
                 kakaoButton.style.display = "block";
                 download.style.display = "block"
@@ -494,21 +607,21 @@
                 download.style.fontSize = '18px'
                 download.style.padding = "12px 16px"; // 패딩 상하: 12px, 좌우: 60px
                 console.log("선택된 말씀:", selectedVerse);
+
             }, 5000); // 5초 딜레이
         });
 
         //사진 다운로드
         document.getElementById("downloadButton").addEventListener("click", () => {
-            const container = document.querySelector(".container");
-            const verseBox = document.getElementById("verseBox");
-            const h1 = document.querySelector("h1");
-            const h2 = document.querySelector("h2");
+                const container = document.querySelector(".container");
+                const verseBox = document.getElementById("verseBox");
+                const backButton = document.getElementById("backButton")
 
-            // UI 요소 숨김 처리
-            document.getElementById("verseButton").style.display = "none";
-            document.getElementById("downloadButton").style.display = "none";
-            const shareButton = document.getElementById("kakaoButton");
-            if (shareButton) shareButton.style.display = "none";
+                // UI 요소 숨김 처리
+                document.getElementById("verseButton").style.display = "none";
+                document.getElementById("downloadButton").style.display = "none";
+                const shareButton = document.getElementById("kakaoButton");
+                if (shareButton) shareButton.style.display = "none";
 
             // 캡처 설정
             html2canvas(container, {
@@ -519,55 +632,84 @@
                     const clonedH2 = clonedDoc.querySelector("h2");
                     const clonedVerseBox = clonedDoc.getElementById("verseBox");
 
-                    // 제목 (h1) 스타일 조정
-                    clonedH1.style.fontSize = "4.5rem";
-                    clonedH1.style.textAlign = "center";
-                    clonedH1.style.marginBottom = "10px";
-                    clonedH1.style.fontWeight = "bold";
+                        // 제목 (h1) 스타일 조정
+                        clonedH1.style.fontSize = "4.5rem";
+                        clonedH1.style.textAlign = "center";
+                        clonedH1.style.marginBottom = "10px";
+                        clonedH1.style.fontWeight = "bold";
 
-                    // 배경색 없애기 및 텍스트 색상 설정
-                    clonedH1.style.background = "none"; // 배경 제거
-                    clonedH1.style.webkitBackgroundClip = "none"; // 배경 클립 제거
-                    clonedH1.style.webkitTextFillColor = "inherit"; // 텍스트 채우기 원래 색상
-                    clonedH1.style.color = "#b63e3e"; // 기존 글자 색상으로 설정
+                        // 배경색 없애기 및 텍스트 색상 설정
+                        clonedH1.style.background = "none"; // 배경 제거
+                        clonedH1.style.webkitBackgroundClip = "none"; // 배경 클립 제거
+                        clonedH1.style.webkitTextFillColor = "inherit"; // 텍스트 채우기 원래 색상
+                        clonedH1.style.color = "#b63e3e"; // 기존 글자 색상으로 설정
 
-                    // 부제목 (h2) 스타일 조정
-                    clonedH2.style.fontSize = "1.5rem";
-                    clonedH2.style.textAlign = "center";
-                    clonedH2.style.marginBottom = "15px";
+                        // 부제목 (h2) 스타일 조정
+                        clonedH2.style.fontSize = "1.5rem";
+                        clonedH2.style.textAlign = "center";
+                        clonedH2.style.marginBottom = "15px";
 
-                    // verse-box 스타일 조정
-                    clonedVerseBox.style.padding = "30px";
-                    clonedVerseBox.style.margin = "0 auto";
-                    clonedVerseBox.style.boxShadow = "none"; // 캡처 시 그림자 제거
-                    // 말씀 박스 (verse-box) 스타일 조정
-                    clonedVerseBox.style.padding = "30px";
-                    clonedVerseBox.style.margin = "0 auto";
-                    clonedVerseBox.style.border = "1px solid #F5C2C2"; // 부드러운 테두리
-                    clonedVerseBox.style.borderRadius = "15px";
-                    clonedVerseBox.style.boxShadow = "none"; // 캡처 시 그림자 제거
-                    clonedVerseBox.style.background = "white"; // 배경 흰색으로 유지
-                },
-            })
+                        // verse-box 스타일 조정
+                        clonedVerseBox.style.padding = "30px";
+                        clonedVerseBox.style.margin = "0 auto";
+                        clonedVerseBox.style.boxShadow = "none"; // 캡처 시 그림자 제거
+                        // 말씀 박스 (verse-box) 스타일 조정
+                        clonedVerseBox.style.padding = "30px";
+                        clonedVerseBox.style.margin = "0 auto";
+                        clonedVerseBox.style.border = "1px solid #F5C2C2"; // 부드러운 테두리
+                        clonedVerseBox.style.borderRadius = "15px";
+                        clonedVerseBox.style.boxShadow = "none"; // 캡처 시 그림자 제거
+                        clonedVerseBox.style.background = "white"; // 배경 흰색으로 유지
+
+                        backButton.style.display = 'block'
+                    },
+                })
                 .then((canvas) => {
-                    // 기존 내용을 지우고 이미지 표시
-                    const container = document.querySelector(".container");
-                    container.innerHTML = ""; // 기존 콘텐츠 제거
+                    // 기존 콘텐츠 숨김
+                    container.style.display = "none";
 
                     // 캡처된 이미지를 DOM에 추가
                     const img = document.createElement("img");
                     img.src = canvas.toDataURL("image/png");
+                    img.id = "screenshotImage"; // ID 추가
                     img.style.width = "100%"; // 이미지가 화면에 꽉 차도록 설정
                     img.style.height = '100vh'
                     img.style.maxWidth = "600px"; // 최대 크기 제한
                     img.style.margin = "20px auto"; // 가운데 정렬
                     img.style.display = "block"; // 이미지 블록 표시
+                    document.body.appendChild(img);
 
-                    container.appendChild(img);
+                    // 뒤로 가기 버튼 표시
+                    backButton.style.display = "block";
+                    console.log('backButton')
                 })
                 .catch((err) => {
                     console.error("스크린샷 생성 중 오류 발생:", err);
                 });
+        });
+
+// 뒤로가기 버튼 클릭 이벤트
+        document.getElementById("backToResultsButton").addEventListener("click", () => {
+            const container = document.querySelector(".container");
+            const screenshotImage = document.getElementById("screenshotImage");
+            const backButton = document.getElementById("backButton");
+            const kakaoButton = document.getElementById("kakaoButton");
+            const verseButton = document.getElementById("verseButton");
+            const downloadButton = document.getElementById("downloadButton");
+
+            // 스크린샷 이미지 제거
+            if (screenshotImage) {
+                screenshotImage.remove(); // 이미지 삭제
+                console.log("스크린샷 이미지 제거");
+            }
+
+            // 이전 UI 복구
+            container.style.display = "flex"; // 컨테이너 다시 표시
+            backButton.style.display = "none"; // 뒤로가기 버튼 숨김
+            kakaoButton.style.display = 'block'
+            verseButton.style.display = 'block'
+            downloadButton.style.display = 'block'
+            console.log("UI 복구 완료");
         });
 
         // 카카오 초기화
