@@ -550,22 +550,23 @@
                 },
             })
                 .then((canvas) => {
-                    // 캡처된 이미지를 Blob으로 변환 후 다운로드
-                    canvas.toBlob((blob) => {
-                        const link = document.createElement("a");
-                        link.href = URL.createObjectURL(blob);
-                        link.download = "bible-verse.png";
-                        link.click();
-                        URL.revokeObjectURL(link.href);
+                    // 기존 내용을 지우고 이미지 표시
+                    const container = document.querySelector(".container");
+                    container.innerHTML = ""; // 기존 콘텐츠 제거
 
-                        // UI 요소 복원
-                        document.getElementById("verseButton").style.display = "block";
-                        document.getElementById("downloadButton").style.display = "block";
-                        if (shareButton) shareButton.style.display = "block";
-                    });
+                    // 캡처된 이미지를 DOM에 추가
+                    const img = document.createElement("img");
+                    img.src = canvas.toDataURL("image/png");
+                    img.style.width = "100%"; // 이미지가 화면에 꽉 차도록 설정
+                    img.style.height = '100vh'
+                    img.style.maxWidth = "600px"; // 최대 크기 제한
+                    img.style.margin = "20px auto"; // 가운데 정렬
+                    img.style.display = "block"; // 이미지 블록 표시
 
-                }).catch((err) => {
-                    console.error("다운로드 중 오류 발생:", err);
+                    container.appendChild(img);
+                })
+                .catch((err) => {
+                    console.error("스크린샷 생성 중 오류 발생:", err);
                 });
         });
 
